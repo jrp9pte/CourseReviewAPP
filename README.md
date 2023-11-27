@@ -2,7 +2,7 @@
 # Homework 6 - Responding to Change
 
 ## Authors
-1) Name, netid, [GitHub profile name]
+1) Laura Abood, axu8rx, labood230
 2) Name, netid, [GitHub profile name]
 3) Name, netid, [GitHub profile name]
 4) Name, netid, [GitHub profile name]
@@ -15,7 +15,7 @@
 
 List the primary contributions of each author. It is recommended to update this with your contributions after each coding session.:
 
-### [Author 1 - replace this with their name]
+### Laura Abood
 
 * Author 1 contributions
 * as a bulleted list
@@ -41,4 +41,4 @@ List the primary contributions of each author. It is recommended to update this 
 
 ## Issues
 
-List any known issues (bugs, incorrect behavior, etc.) at the time of submission.
+n/a
