@@ -3,7 +3,7 @@
 
 ## Authors
 1) Laura Abood, axu8rx, labood230
-2) Name, netid, [GitHub profile name]
+2) Krish Sahoo, ks5tj, ks5tj
 3) Name, netid, [GitHub profile name]
 4) Name, netid, [GitHub profile name]
 
@@ -21,7 +21,7 @@ List the primary contributions of each author. It is recommended to update this 
 * as a bulleted list
 * each line starts with an asterisk and a space
 
-### [Author 2 - replace this with their name]
+### Krish Sahoo
 
 * Author 2 contributions
 * as a bulleted list
