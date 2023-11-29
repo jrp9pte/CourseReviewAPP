@@ -9,6 +9,6 @@ public class LoginScreenController {
     private Label messageLabel;
 
     public void handleButton() {
-        messageLabel.setText("You pressed the button!");
+        messageLabel.setText("Incorrect username or password.");
     }
 }
