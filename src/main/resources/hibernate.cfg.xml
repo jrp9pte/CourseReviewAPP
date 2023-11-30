@@ -1,0 +1,19 @@
+<hibernate-configuration>
+    <session-factory>
+        <property name="show_sql">false</property>
+        <property name="format_sql">false</property>
+        <property name="dialect">org.sqlite.hibernate.dialect.SQLiteDialect</property>
+        <property name="connection.driver_class">org.sqlite.JDBC</property>
+        <property name="connection.url">jdbc:sqlite:my_db.sqlite3</property>
+        <property name="connection.username"></property>
+        <property name="connection.password"></property>
+
+        <property name="hibernate.hbm2ddl.auto" >update</property>
+
+        <mapping class="edu.virginia.sde.reviews.Course" />
+        <mapping class="edu.virginia.sde.reviews.Review" />
+        <mapping class="edu.virginia.sde.reviews.User" />
+
+
+    </session-factory>
+</hibernate-configuration>
