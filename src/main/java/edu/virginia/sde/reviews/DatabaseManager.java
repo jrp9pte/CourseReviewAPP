@@ -7,11 +7,14 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
+import org.junit.jupiter.api.BeforeAll;
 
 import java.util.List;
 
 public class DatabaseManager {
     private static SessionFactory sessionFactory;
+
+
 
     // Initialize the SessionFactory instance
     public static void initializeHibernate() {
@@ -38,6 +41,45 @@ public class DatabaseManager {
             throw new ExceptionInInitializerError(ex);
         }
     }
+    public static SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
+    // Login method to check if the username and password match for an existing user
+    public static boolean login(String username, String password) {
+        try (Session session = sessionFactory.openSession()) {
+            User user = session.createQuery("FROM User U WHERE U.username = :username", User.class)
+                    .setParameter("username", username)
+                    .uniqueResult();
+
+            if (user != null && user.getPassword().equals(password)) {
+                return true; // Login successful
+            } else {
+                return false; // Login failed
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false; // Handling exceptions
+        }
+    }
+
+    // Create new user
+
+    public static String createNewUser(String username, String password) {
+        if (username == null || password == null) {
+            return "Username and password cannot be null.";
+        }
+
+        if (userExists(username)) {
+            return "Username already exists.";
+        }
+
+        if (password.length() < 8) {
+            return "Password must be at least 8 characters long.";
+        }
+
+        addNewUser(username, password);
+        return "User created successfully.";
+    }
 
     // Method to get reviews by user using Hibernate
     public static List<Review> getReviewsByUser(String userId) {
@@ -55,8 +97,177 @@ public class DatabaseManager {
         }
         return reviews;
     }
+    public static boolean userExists(String username) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("FROM User U WHERE U.username = :username", User.class);
+            query.setParameter("username", username);
+            return !query.getResultList().isEmpty();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public static void addNewUser(String username, String password) {
+        if (userExists(username)) {
+            System.out.println("User with username " + username + " already exists.");
+            return;
+        }
 
-    // Add other CRUD operations here...
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+
+            User newUser = new User(username, password);
+            session.save(newUser);
+
+            transaction.commit();
+            System.out.println("User added successfully");
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+        }
+    }
+    public static void updateUser(String username, String newPassword) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            User user = session.get(User.class, username);
+            if (user != null) {
+                user.setPassword(newPassword);
+                session.update(user);
+                transaction.commit();
+                System.out.println("User updated successfully");
+            } else {
+                System.out.println("User not found with username: " + username);
+            }
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+        }
+
+    }
+    public static void deleteUser(String username) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            User user = session.get(User.class, username);
+            if (user != null) {
+                session.delete(user);
+                transaction.commit();
+                System.out.println("User deleted successfully");
+            } else {
+                System.out.println("User not found with username: " + username);
+            }
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+        }
+    }
+    public static List<User> getAllUsers() {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM User", User.class).list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public static void updateCourse(String courseId, String newTitle) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            Course course = session.get(Course.class, courseId);
+            if (course != null) {
+                course.setCourseTitle(newTitle);
+                session.update(course);
+                transaction.commit();
+                System.out.println("Course updated successfully");
+            } else {
+                System.out.println("Course not found with courseId: " + courseId);
+            }
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+        }
+    }
+
+    public static void addCourse(String courseId, String mnemonic, int courseNumber, String courseTitle, double courseRating, List<Review> reviews) {
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+
+            Course newCourse = new Course(courseId, mnemonic, courseNumber, courseTitle, courseRating, reviews);
+            session.save(newCourse);
+
+            transaction.commit();
+            System.out.println("Course added successfully");
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+        } finally {
+            if (session != null) session.close();
+        }
+    }
+
+    public static User getUserByUsername(String username) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM User U WHERE U.username = :username", User.class)
+                    .setParameter("username", username)
+                    .uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public static Course getCourseByMnemonicAndNumber(String mnemonic, int number) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM Course C WHERE C.mnemonic = :mnemonic AND C.courseNumber = :number", Course.class)
+                    .setParameter("mnemonic", mnemonic)
+                    .setParameter("number", number)
+                    .uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public static void addReview(User detachedUser, Course detachedCourse, int rating, String timestamp, String comment) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+
+            // Merge the detached entities into the session
+            User user = (User) session.merge(detachedUser);
+            Course course = (Course) session.merge(detachedCourse);
+
+            Review newReview = new Review();
+            newReview.setUser(user);
+            newReview.setCourse(course);
+            newReview.setRating(rating);
+            newReview.setTimestamp(timestamp);
+            newReview.setComment(comment);
+
+            session.save(newReview);
+            transaction.commit();
+            System.out.println("Review added successfully");
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
+
+
+    // Call this method when closing the application gracefully closes database
+    public void closeApplication() {
+        shutdown();
+        System.exit(0);
+
+    }
 
     // Close the SessionFactory
     public static void shutdown() {

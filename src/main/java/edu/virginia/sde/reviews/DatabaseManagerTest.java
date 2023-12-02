@@ -11,7 +11,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static edu.virginia.sde.reviews.DatabaseManager.*;
 
 public class DatabaseManagerTest {
 
@@ -19,15 +22,9 @@ public class DatabaseManagerTest {
 
     @BeforeAll
     public static void setUp() {
-        // Configure based on the hibernate.cfg.xml
-        Configuration configuration = new Configuration().configure();
-        configuration.addAnnotatedClass(User.class);
-        configuration.addAnnotatedClass(Course.class);
-        configuration.addAnnotatedClass(Review.class);
-
-        ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
-                .applySettings(configuration.getProperties()).build();
-        sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+        DatabaseManager db = new DatabaseManager();
+        db.initializeHibernate();
+        sessionFactory = db.getSessionFactory();
     }
 
     @AfterAll
@@ -38,33 +35,29 @@ public class DatabaseManagerTest {
     }
 
     @Test
-    public void testSessionFactoryInitialization() {
-        Assertions.assertNotNull(sessionFactory, "SessionFactory should be initialized");
-    }
-
-    @Test
-    public void testBasicOperations() {
-        // Use this method to test basic database operations like create, read, update, delete
+    public void testAddAndRetrieveUser() {
         Session session = sessionFactory.openSession();
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
-            // Create operation
-            User user = new User("testUser", "testPassword");
-            session.save(user);
 
-            // Read operation
-            List<User> userList = session.createQuery("FROM User", User.class).list();
-            Assertions.assertFalse(userList.isEmpty(), "User list should not be empty after saving a user");
-
-            // Update operation
-            user.setPassword("updatedPassword");
-            session.update(user);
-
-            // Delete operation
-            session.delete(user);
-
+            // Create a new User instance
+            User newUser = new User("testUsername", "testPassword");
+            session.save(newUser);
+            // Commit the transaction to save the user to the database
             transaction.commit();
+
+            // Clear the session to ensure we fetch from the db, not from the cache
+            session.clear();
+
+            // Retrieve the user from the database
+            User retrievedUser = session.get(User.class, newUser.getId());
+
+            // Assert that the user was retrieved successfully and check field values
+            Assertions.assertNotNull(retrievedUser, "User should be retrieved from the database");
+            Assertions.assertEquals("testUsername", retrievedUser.getUsername(), "Username should match the one that was saved");
+            Assertions.assertEquals("testPassword", retrievedUser.getPassword(), "Password should match the one that was saved");
+
         } catch (Exception e) {
             if (transaction != null) transaction.rollback();
             throw e;
@@ -72,4 +65,79 @@ public class DatabaseManagerTest {
             session.close();
         }
     }
+    @Test
+    public void testaddNewUser() {
+        // Add a new user using the addNewUser method
+        addNewUser("newuniqueuser", "testPassword");
+
+        Session session = sessionFactory.openSession();
+        try {
+            // Clear the session to ensure we fetch from the db, not from the cache
+            session.clear();
+
+            // Retrieve the user from the database
+            User retrievedUser = session.get(User.class, "newuniqueuser");
+
+            // Assert that the user was retrieved successfully and check field values
+            Assertions.assertNotNull(retrievedUser, "User should be retrieved from the database");
+            Assertions.assertEquals("newuniqueuser", retrievedUser.getUsername(), "Username should match the one that was saved");
+            Assertions.assertEquals("testPassword", retrievedUser.getPassword(), "Password should match the one that was saved");
+
+        } finally {
+            session.close();
+        }
+
+
+    }
+    @Test
+    public void testGetReviewsByUser() {
+        // Add users
+        DatabaseManager.addNewUser("user1", "password1");
+        DatabaseManager.addNewUser("user2", "password2");
+
+        // Add courses
+        DatabaseManager.addCourse("2","CS", 101, "Intro to Computer Science", 0.0, new ArrayList<>());
+        DatabaseManager.addCourse("3","MATH", 201, "Advanced Mathematics", 0.0, new ArrayList<>());
+
+        // Retrieve users and courses for reference
+        User user1 = DatabaseManager.getUserByUsername("user1");
+        Course course1 = DatabaseManager.getCourseByMnemonicAndNumber("CS", 101);
+        Course course2 = DatabaseManager.getCourseByMnemonicAndNumber("MATH", 201);
+
+        // Add reviews by user1
+        DatabaseManager.addReview(user1, course1, 5, "2023-01-01", "Excellent course");
+        DatabaseManager.addReview(user1, course2, 4, "2023-01-02", "Challenging but rewarding");
+
+        // Fetch reviews by user1
+        List<Review> reviews = DatabaseManager.getReviewsByUser(user1.getId());
+        Assertions.assertNotNull(reviews, "Review list should not be null");
+        Assertions.assertEquals(2, reviews.size(), "User1 should have 2 reviews");
+
+        // Check contents of the reviews
+        Review firstReview = reviews.get(0);
+        Review secondReview = reviews.get(1);
+        Assertions.assertTrue(firstReview.getComment().equals("Excellent course") || secondReview.getComment().equals("Excellent course"), "One review should be 'Excellent course'");
+        Assertions.assertTrue(firstReview.getComment().equals("Challenging but rewarding") || secondReview.getComment().equals("Challenging but rewarding"), "One review should be 'Challenging but rewarding'");
+    }
+    @Test
+    public void testLoginFunctionality() {
+        // Setup: Create a test user
+        String testUsername = "testdeletion";
+        String testPassword = "testPasswordsdfd";
+        DatabaseManager.addNewUser(testUsername, testPassword);
+
+        // Test: Attempt to login with correct credentials
+        boolean loginSuccess = DatabaseManager.login(testUsername, testPassword);
+        Assertions.assertTrue(loginSuccess, "Login should succeed with correct credentials");
+
+        // Test: Attempt to login with incorrect credentials
+        boolean loginFail = DatabaseManager.login(testUsername, "wrongPassword");
+        Assertions.assertFalse(loginFail, "Login should fail with incorrect credentials");
+
+        // Cleanup: Optionally delete the test user after the test
+        DatabaseManager.deleteUser(testUsername);
+    }
 }
+
+
+    // ... Other tests ...

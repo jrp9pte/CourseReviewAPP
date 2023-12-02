@@ -3,12 +3,12 @@ package edu.virginia.sde.reviews;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "review")
+@Table(name = "Reviews")
 public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private int id;
 
     private int rating;
     private String timestamp;
@@ -26,12 +26,13 @@ public class Review {
 
     }
 
-    public Review(int rating, String timestamp, String comment, User user, Course course) {
+    public Review(int id, int rating, String timestamp, String comment, User user, Course course) {
         this.rating = rating;
         this.timestamp = timestamp;
         this.comment = comment;
         this.user = user;
         this.course = course;
+
     }
 
     public int getRating() {

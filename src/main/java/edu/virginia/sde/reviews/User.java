@@ -1,5 +1,7 @@
 package edu.virginia.sde.reviews;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
@@ -8,7 +10,6 @@ import javax.persistence.*;
 @Table(name = "Users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String username;
 
     private String password;
@@ -19,6 +20,7 @@ public class User {
     // Constructors, getters, setters
 
     public User() {
+        reviews = new ArrayList<>();
 
     }
     public User(String username, String password) {
@@ -30,6 +32,7 @@ public class User {
     }
     public void addReview(Review review) {
         reviews.add(review);
+        review.setUser(this);
     }
     public List<Review> getReviews() {
         return reviews;
@@ -42,5 +45,7 @@ public class User {
     }
 
 
-
+    public String getId() {
+        return username;
+    }
 }
