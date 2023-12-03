@@ -129,6 +129,28 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
+    public static List<Course> getAllCourses() {
+        try (Session session = sessionFactory.openSession()) {
+            List<Course> courses = session.createQuery("FROM Course", Course.class).list();
+            return courses;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static List<Review> getAllReviews() {
+        try (Session session = sessionFactory.openSession()) {
+            List<Review> reviews = session.createQuery("FROM Review", Review.class).list();
+            return reviews;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static void updateUser(String username, String newPassword) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {

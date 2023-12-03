@@ -26,7 +26,7 @@ public class CreateAccountController {
         // Call the method from DatabaseManager and handle the response
 
         String response = DatabaseManager.createNewUser(username, password);
-        if (response == "User created successfully.") {
+        if (response.equals("User created successfully.")) {
             try {
                 // Load the login screen
                 Parent loginRoot = FXMLLoader.load(getClass().getResource("login-screen.fxml"));

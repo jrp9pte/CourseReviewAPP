@@ -98,4 +98,7 @@ public class Course {
         this.reviews = reviews;
         recalculateRating();
     }
+    public String toString() {
+        return String.format("%s %s %s", mnemonic, courseNumber, courseTitle);
+    }
 }

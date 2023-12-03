@@ -123,7 +123,7 @@ public class DatabaseManagerTest {
     @Test
     public void testtest() {
         List<Course> courses = new ArrayList<>();
-        //courses = DatabaseManager;
+        courses = DatabaseManager.getAllCourses();
         for (Course course : courses) {
             System.out.println(course.toString());
         }
