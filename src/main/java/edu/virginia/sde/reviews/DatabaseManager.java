@@ -8,6 +8,8 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
 import org.junit.jupiter.api.BeforeAll;
+import edu.virginia.sde.reviews.User;
+
 
 import java.util.List;
 

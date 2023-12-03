@@ -118,6 +118,15 @@ public class DatabaseManagerTest {
         Review secondReview = reviews.get(1);
         Assertions.assertTrue(firstReview.getComment().equals("Excellent course") || secondReview.getComment().equals("Excellent course"), "One review should be 'Excellent course'");
         Assertions.assertTrue(firstReview.getComment().equals("Challenging but rewarding") || secondReview.getComment().equals("Challenging but rewarding"), "One review should be 'Challenging but rewarding'");
+
+    }
+    @Test
+    public void testtest() {
+        List<Course> courses = new ArrayList<>();
+        //courses = DatabaseManager;
+        for (Course course : courses) {
+            System.out.println(course.toString());
+        }
     }
     @Test
     public void testLoginFunctionality() {
