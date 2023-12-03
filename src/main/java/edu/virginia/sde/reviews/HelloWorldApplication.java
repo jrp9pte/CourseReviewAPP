@@ -17,7 +17,7 @@ public class HelloWorldApplication extends Application {
 //        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("hello-world.fxml"));
 //        Scene scene = new Scene(fxmlLoader.load());
 //        stage.setTitle("Hello World");
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("course_search.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("course-search.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Course Search");
         stage.setScene(scene);
