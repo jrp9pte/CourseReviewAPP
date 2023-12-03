@@ -8,11 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.Objects;
 
 public class CourseSearchController {
@@ -90,7 +86,6 @@ public class CourseSearchController {
 
     }
 
-    // https://code.makery.ch/blog/javafx-8-tableview-cell-renderer/
     private void setCellFactoryForCourseList() {
         CourseSearchList.setCellFactory(param -> new ListCell<>() {
             private HBox hbox;
@@ -98,22 +93,16 @@ public class CourseSearchController {
             private Button courseReviewButton;
 
             {
-                hbox = new HBox(1000); // 1000 is the spacing between label and button
-                // hbox.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, null, null)));
+                hbox = new HBox(370); // int is the spacing between label and button
                 label = new Label();
                 courseReviewButton = new Button("Course Review");
-                courseReviewButton.setStyle("-fx-background-color: #6fa8e3; ");
 
                 courseReviewButton.setOnAction(event -> {
                     // Call the linked action using the course information
                     // can delete the next few lines later (used for testing)
                     String courseInfo = getItem();
                     System.out.println("testing " + courseInfo);
-                    try {
-                        handleLinkedButtonAction(courseInfo);
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
+                    handleLinkedButtonAction(courseInfo);
                 });
 
                 hbox.getChildren().addAll(label, courseReviewButton);
@@ -135,16 +124,10 @@ public class CourseSearchController {
         });
     }
 
-    private void handleLinkedButtonAction(String courseInfo) throws Exception {
+    private void handleLinkedButtonAction(String courseInfo) {
         // Implement the linked button action using the course information
         // when button is clicked then go to the course review scene
-           System.out.println("Linked button clicked for: " + courseInfo);
-           FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("hello-world.fxml"));
-           Stage newStage = new Stage();
-           Scene newScene = new Scene(fxmlLoader.load());
-           newStage.setTitle("Course Search");
-           newStage.setScene(newScene);
-           newStage.show();
+        System.out.println("Linked button clicked for: " + courseInfo);
     }
 
 }

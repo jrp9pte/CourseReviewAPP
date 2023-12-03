@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="485.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.virginia.sde.reviews.LoginScreenController">
+    <children>
+        <Button layoutX="444.0" layoutY="8.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="32.0" text="Exit">
+            <font>
+                <Font name="SansSerif Regular" size="7.0" />
+            </font>
+        </Button>
+        <Text layoutX="117.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login Existing User" >
+            <font>
+                <Font name="SansSerif Regular" size="26.0" />
+            </font>
+        </Text>
+      <VBox alignment="BOTTOM_LEFT" layoutX="94.0" layoutY="121.0" prefHeight="26.0" prefWidth="258.0">
+         <children>
+                <Label alignment="TOP_LEFT" prefHeight="10.0" prefWidth="130.0" text="Enter Login Information:" />
+         </children>
+      </VBox>
+        <VBox alignment="CENTER_RIGHT" layoutX="96.0" layoutY="88.0" prefHeight="200.0" prefWidth="258.0">
+            <children>
+                <TextField fx:id="usernameField" layoutX="197.0" layoutY="188.0" prefHeight="26.0" prefWidth="270.0" promptText="Username" />
+                <TextField fx:id="passwordField" layoutX="10.0" layoutY="44.0" prefHeight="20.0" prefWidth="50.0" promptText="Password" />
+                <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#authenticateUser" text="Submit" />
+            </children>
+        </VBox>
+          <Label fx:id="messageLabel" layoutX="98.0" layoutY="204.0" prefHeight="17.0" prefWidth="197.0" textFill="#ff0101" />
+    </children>
+</AnchorPane>
