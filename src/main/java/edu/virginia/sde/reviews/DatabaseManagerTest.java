@@ -95,18 +95,18 @@ public class DatabaseManagerTest {
         DatabaseManager.addNewUser("user1", "password1");
         DatabaseManager.addNewUser("user2", "password2");
 
-        // Add courses
-        DatabaseManager.addCourse("2","CS", 101, "Intro to Computer Science", 0.0, new ArrayList<>());
-        DatabaseManager.addCourse("3","MATH", 201, "Advanced Mathematics", 0.0, new ArrayList<>());
+//        // Add courses
+//        DatabaseManager.addCourse("2","CS", 101, "Intro to Computer Science", 0.0, new ArrayList<>());
+//        DatabaseManager.addCourse("3","MATH", 201, "Advanced Mathematics", 0.0, new ArrayList<>());
 
         // Retrieve users and courses for reference
         User user1 = DatabaseManager.getUserByUsername("user1");
-        Course course1 = DatabaseManager.getCourseByMnemonicAndNumber("CS", 101);
-        Course course2 = DatabaseManager.getCourseByMnemonicAndNumber("MATH", 201);
+//        Course course1 = DatabaseManager.getCourseByMnemonicAndNumber("CS", 101);
+//        Course course2 = DatabaseManager.getCourseByMnemonicAndNumber("MATH", 201);
 
-        // Add reviews by user1
-        DatabaseManager.addReview(user1, course1, 5, "2023-01-01", "Excellent course");
-        DatabaseManager.addReview(user1, course2, 4, "2023-01-02", "Challenging but rewarding");
+//        // Add reviews by user1
+//        DatabaseManager.addReview(user1, course1, 5, "2023-01-01", "Excellent course");
+//        DatabaseManager.addReview(user1, course2, 4, "2023-01-02", "Challenging but rewarding");
 
         // Fetch reviews by user1
         List<Review> reviews = DatabaseManager.getReviewsByUser(user1.getId());

@@ -2,13 +2,18 @@ package edu.virginia.sde.reviews;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.event.ActionEvent;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class CourseSearchController {
@@ -21,20 +26,47 @@ public class CourseSearchController {
     @FXML
     private ListView<String> CourseSearchList;
     private String courseMnemonic;
-    private String courseNumber;
+    private int courseNumber;
     private String courseTitle;
+    private int newCourseRating;
 
+    private DatabaseManager databaseManager = new DatabaseManager();
     public void handleSearchButton() {
 
         String mnemonicSearch = CourseMnemonic.getText();
         String numberSearch = CourseNumber.getText();
         String titleSearch = CourseTitle.getText();
-        if (!Objects.equals(mnemonicSearch, "") || !Objects.equals(numberSearch, "") || !Objects.equals(titleSearch, "")) {
-            ObservableList<String> searchResults = FXCollections.observableArrayList("Course 1", "Course 2");
+
+        List<Course> courseList = new ArrayList<>();
+        if (!Objects.equals(mnemonicSearch, "") && !Objects.equals(numberSearch, "") && !Objects.equals(titleSearch, "")) {
+              courseList = DatabaseManager.getCourseByMnemonicAndNumberAndTitleContains(mnemonicSearch, Integer.parseInt(numberSearch), titleSearch);
+
+        } else if (!Objects.equals(mnemonicSearch, "") && !Objects.equals(numberSearch, "")) {
+            courseList = DatabaseManager.getCourseByMnemonicAndNumber(mnemonicSearch, Integer.parseInt(numberSearch));
+
+        } else if (!Objects.equals(mnemonicSearch, "") && !Objects.equals(titleSearch, "")) {
+            courseList = DatabaseManager.getCourseByMnemonicAndTitleContains(mnemonicSearch, titleSearch);
+
+        } else if (!Objects.equals(titleSearch, "") && !Objects.equals(numberSearch, "")) {
+           courseList = DatabaseManager.getCourseByTitleContainsAndNumber(titleSearch, Integer.parseInt(numberSearch));
+
+        } else if (!Objects.equals(titleSearch, "")) {
+            courseList = DatabaseManager.getCourseByTitleContains(titleSearch);
+
+        } else if (!Objects.equals(numberSearch, "")) {
+            courseList = DatabaseManager.getCourseByNumber(Integer.parseInt(numberSearch));
+
+        } else if (!Objects.equals(mnemonicSearch, "")){
+            courseList = DatabaseManager.getCourseByMnemonic(mnemonicSearch);
+        }
+            ObservableList<String> searchResults = FXCollections.observableArrayList();
+            for(Course course : courseList) {
+                String displayString = String.format("%-1s %-10s %-30s %-20s",course.getMnemonic(), course.getCourseNumber(), course.getCourseTitle(),course.getCourseRating());
+                searchResults.add(displayString);
+                System.out.println(displayString);
+            }
             CourseSearchList.setItems(searchResults);
             setCellFactoryForCourseList();
-
-        }
     }
 
     public void handleAddButton() {
@@ -49,6 +81,7 @@ public class CourseSearchController {
         TextField addCourseMnemonic = new TextField();
         TextField addCourseNumber = new TextField();
         TextField addCourseTitle = new TextField();
+        TextField addNewCourseRating = new TextField();
 
         gridPane.add(new Label("Course Mnemonic"), 0, 0);
         gridPane.add(addCourseMnemonic, 1, 0);
@@ -56,6 +89,8 @@ public class CourseSearchController {
         gridPane.add(addCourseNumber, 1, 1);
         gridPane.add(new Label("Course Title"), 0, 2);
         gridPane.add(addCourseTitle, 1, 2);
+        gridPane.add(new Label("Rating"), 0, 3);
+        gridPane.add(addNewCourseRating, 1, 3);
 
         dialog.getDialogPane().setContent(gridPane);
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
@@ -63,12 +98,15 @@ public class CourseSearchController {
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == ButtonType.OK) {
                 courseMnemonic = addCourseMnemonic.getText();
-                courseNumber = addCourseNumber.getText();
+                courseNumber = Integer.parseInt(addCourseNumber.getText());
                 courseTitle = addCourseTitle.getText();
+                newCourseRating = Integer.parseInt(addNewCourseRating.getText());
 
                 if (!Objects.equals(addCourseMnemonic.getText(), "") && !Objects.equals(addCourseNumber.getText(), "") && !Objects.equals(addCourseTitle.getText(), "")) {
                     // add the added class to the list
-                    String formattedRow = String.format(courseMnemonic + " " + courseNumber + " " + courseTitle);
+
+                    String formattedRow = String.format("%-10s %-10s %-30s %-10s",courseMnemonic, courseNumber, courseTitle, newCourseRating);
+                    DatabaseManager.addCourse(courseMnemonic, courseNumber, courseTitle, newCourseRating, null);
                     ObservableList<String> searchResults = FXCollections.observableArrayList(formattedRow);
                     CourseSearchList.setItems(searchResults);
                 } else {
@@ -93,19 +131,21 @@ public class CourseSearchController {
             private Button courseReviewButton;
 
             {
-                hbox = new HBox(370); // int is the spacing between label and button
+                hbox = new HBox(80); // int is the spacing between label and button
                 label = new Label();
                 courseReviewButton = new Button("Course Review");
+                courseReviewButton.setStyle("-fx-background-color: #6fa8e3; ");
+
+                Region spacer = new Region();
+                HBox.setHgrow(spacer, Priority.ALWAYS);
 
                 courseReviewButton.setOnAction(event -> {
                     // Call the linked action using the course information
-                    // can delete the next few lines later (used for testing)
                     String courseInfo = getItem();
-                    System.out.println("testing " + courseInfo);
                     handleLinkedButtonAction(courseInfo);
                 });
 
-                hbox.getChildren().addAll(label, courseReviewButton);
+                hbox.getChildren().addAll(label, spacer, courseReviewButton);
             }
 
             // function updates/displays the linked button next to each course listing
