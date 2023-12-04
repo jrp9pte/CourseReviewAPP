@@ -14,6 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class MyReviewsController {
     private CourseReviewsApplication mainApp;
@@ -33,10 +34,11 @@ public class MyReviewsController {
 
     // Method to load reviews into the ListView
     private void loadReviews() {
-        DatabaseManager database = new DatabaseManager();
-        database.initializeHibernate();
+//        DatabaseManager database = new DatabaseManager();
+
+        DatabaseManager.initializeHibernate();
         ObservableList<Review> reviews  = FXCollections.observableArrayList();
-        database.getAllReviews().forEach(review -> reviews.add(review));
+        reviews.addAll(Objects.requireNonNull(DatabaseManager.getAllReviews()));
         reviewsListView.setItems(reviews);
 
         // Setting a cell factory
@@ -58,11 +60,29 @@ public class MyReviewsController {
     private void setupReviewClickListener() {
         reviewsListView.setOnMouseClicked((MouseEvent event) -> {
             Review selectedReview = reviewsListView.getSelectionModel().getSelectedItem();
+            System.out.println("reached load reviews");
             if (selectedReview != null) {
-                // TODO: Handle the click on the review.
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CourseReviews.fxml"));
+                    Scene scene = new Scene(fxmlLoader.load());
+                    stage.setScene(scene);
+                    stage.setTitle("Course Reviews");
+
+                    CourseReviewsController controller = fxmlLoader.getController();
+                    controller.setStage(stage);
+                    controller.setCourse(selectedReview.getCourse());
+                    stage.show();
+
+                }  catch (IOException e) {
+                    System.out.println("there was an Error!" +  e.getMessage() );
+                    throw new RuntimeException(e);
+                }
             }
         });
     }
+
+
+
 
     // Event handler for the back button
     @FXML
@@ -75,6 +95,7 @@ public class MyReviewsController {
 
             // Set the course search scene on the stage
             stage.setScene(courseSearchScene);
+            stage.setTitle("Course Search");
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
