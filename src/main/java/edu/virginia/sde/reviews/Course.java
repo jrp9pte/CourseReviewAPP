@@ -8,6 +8,7 @@ import java.util.Objects;
 @Table(name = "Courses")
 public class Course {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String courseId;
 
     @Column(length = 4, nullable = false)
@@ -29,7 +30,7 @@ public class Course {
     public Course() {}
 
     public Course(String courseId, String mnemonic, int courseNumber, String courseTitle, double courseRating, List<Review> reviews) {
-        this.courseId = courseId;
+        //this.courseId = courseId;
         this.mnemonic = mnemonic;
         this.courseNumber = courseNumber;
         this.courseTitle = courseTitle;
@@ -84,7 +85,7 @@ public class Course {
     }
 
     public double getCourseRating() {
-        return courseRating;
+        return this.courseRating;
     }
 
     public void setCourseRating(double courseRating) {
