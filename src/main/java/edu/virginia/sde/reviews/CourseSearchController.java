@@ -2,6 +2,8 @@ package edu.virginia.sde.reviews;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
@@ -9,6 +11,8 @@ import javafx.event.ActionEvent;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
+import java.io.IOException;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 
@@ -30,7 +34,10 @@ public class CourseSearchController {
     private String courseTitle;
     private int newCourseRating;
 
+
+    private Stage stage;
     private DatabaseManager databaseManager = new DatabaseManager();
+  
     public void handleSearchButton() {
 
         String mnemonicSearch = CourseMnemonic.getText();
@@ -185,6 +192,29 @@ public class CourseSearchController {
         // Implement the linked button action using the course information
         // when button is clicked then go to the course review scene
         System.out.println("Linked button clicked for: " + courseInfo);
+
+//        Sonthing like this
+//        Pass stage to this scene (use setStage function below) when called to use it here for changing scene
+//        try {
+//            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CourseReviews.fxml"));
+//            Scene scene = new Scene(fxmlLoader.load());
+//            stage.setScene(scene);
+//            stage.setTitle("Course Reviews");
+//
+//            CourseReviewsController controller = fxmlLoader.getController();
+//            controller.setStage(stage);
+//            controller.initCourseData(selectedReview.getCourse());
+////                    controller.setCourse(selectedReview.getCourse());
+//            stage.show();
+//
+//        }  catch (IOException e) {
+//            System.out.println("there was an Error!" +  e.getMessage() );
+//            throw new RuntimeException(e);
+//        }
+
+    }
+    public void setStage(Stage stage){
+        this.stage = stage;
     }
 
 }

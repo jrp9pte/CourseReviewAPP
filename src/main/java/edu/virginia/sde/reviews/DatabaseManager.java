@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeAll;
 import edu.virginia.sde.reviews.User;
 
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
@@ -272,7 +273,6 @@ public class DatabaseManager {
             return null;
         }
     }
-
     public static List<Course> getCourseByMnemonicAndNumber(String mnemonic, int number) {
         try (Session session = sessionFactory.openSession()) {
             return session.createQuery("FROM Course C WHERE lower(C.mnemonic) = lower(:mnemonic) AND C.courseNumber = :number", Course.class)

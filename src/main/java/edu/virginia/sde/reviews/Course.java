@@ -2,6 +2,7 @@ package edu.virginia.sde.reviews;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Courses")
@@ -101,5 +102,17 @@ public class Course {
     }
     public String toString() {
         return String.format("%s %s %s", mnemonic, courseNumber, courseTitle);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Course course)) return false;
+        return getCourseNumber() == course.getCourseNumber() && Objects.equals(getCourseId(), course.getCourseId()) && Objects.equals(getMnemonic(), course.getMnemonic()) && Objects.equals(getCourseTitle(), course.getCourseTitle());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getCourseId(), getMnemonic(), getCourseNumber(), getCourseTitle());
     }
 }

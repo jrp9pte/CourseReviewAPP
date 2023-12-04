@@ -4,7 +4,7 @@
 ## Authors
 1) Laura Abood, axu8rx, labood230
 2) Krish Sahoo, ks5tj, ks5tj
-3) Name, netid, [GitHub profile name]
+3) Jay Patel, jrp9pte, [jrp9pte]
 4) Name, netid, [GitHub profile name]
 
 ## To Run
@@ -27,9 +27,9 @@ List the primary contributions of each author. It is recommended to update this 
 * as a bulleted list
 * each line starts with an asterisk and a space
 
-### [Author 3 - replace this with their name]
+### Jay Patel
 
-* Author 3 contributions
+* My Reviews Scene, Course Reviews Scene
 * as a bulleted list
 * each line starts with an asterisk and a space
 
