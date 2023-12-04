@@ -11,6 +11,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,8 +107,12 @@ public class DatabaseManagerTest {
         Course course2 = DatabaseManager.getCourseByMnemonicAndNumber("MATH", 201);
 
         // Add reviews by user1
-        DatabaseManager.addReview(user1, course1, 5, "2023-01-01", "Excellent course");
-        DatabaseManager.addReview(user1, course2, 4, "2023-01-02", "Challenging but rewarding");
+        LocalDateTime localDateTime1 = LocalDateTime.of(2023, 1, 1, 1, 1, 1, 1_000_000); // nanoseconds in the last argument
+        Timestamp timestamp1 = Timestamp.valueOf(localDateTime1);
+        LocalDateTime localDateTime2 = LocalDateTime.of(2023, 1, 2, 1, 1, 1, 1_000_000); // nanoseconds in the last argument
+        Timestamp timestamp2 = Timestamp.valueOf(localDateTime2);
+//        DatabaseManager.addReview(user1, course1, 5, timestamp1, "Excellent course");
+        DatabaseManager.addReview(user1, course2, 4, timestamp2, "Challenging but rewarding");
 
         // Fetch reviews by user1
         List<Review> reviews = DatabaseManager.getReviewsByUser(user1.getId());
