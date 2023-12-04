@@ -1,22 +1,22 @@
 package edu.virginia.sde.reviews;
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.control.Label;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,20 +34,78 @@ public class CourseReviewsController {
     @FXML
     private TextArea commentTextArea;
 
+    @FXML
+    private TableView<Review> reviewsTableView;
+    @FXML
+    private TableColumn<Review, Integer> ratingColumn;
+    @FXML
+    private TableColumn<Review, String> timestampColumn;
+    @FXML
+    private TableColumn<Review, String> commentColumn;
+
     private DatabaseManager database = new DatabaseManager();
     private Stage stage;
     private Course course;
     private List<Review> courseReviews;
+    private User user;
+    private Review selectedReview;
 
     // Call this method to initialize the scene with a specific course
-    public void initCourseData(Course course) {
+    public void initCourseData(Course course, User user) {
         ratingComboBox.setItems(FXCollections.observableArrayList(1, 2, 3, 4, 5));
         loadReviews(course);
         loadCourseData(course);
         checkAndSetUserReviewStatus(course);
         setCourse(course);
         database.initializeHibernate();
+        this.user = user;
+        setupReviewsTable();
+        reviewsTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
     }
+    private void setupReviewsTable() {
+        // Assuming Review class has methods: getRating, getTimestamp, and getComment
+
+        // Set up the Rating column
+        ratingColumn.setCellValueFactory(review -> new SimpleIntegerProperty(review.getValue().getRating()).asObject());
+
+//
+//        // Set up the Timestamp column
+//        timestampColumn.setCellValueFactory(cellData ->
+//                new SimpleStringProperty(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(cellData.getValue().getTimestamp()))
+//        );
+//
+//        // Set up the Comment column
+//        commentColumn.setCellValueFactory(review -> new PropertyValueFactory<>(review.getComment()));
+        commentColumn.setCellValueFactory(new PropertyValueFactory<>("comment"));
+        setCenteredCellFactory(ratingColumn);
+        setCenteredCellFactory(timestampColumn);
+        setCenteredCellFactory(commentColumn);
+
+        reviewsTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            selectedReview = newSelection;
+        });
+    }
+    private <T> void setCenteredCellFactory(TableColumn<Review, T> column) {
+        column.setCellFactory(col -> {
+            TableCell<Review, T> cell = new TableCell<Review, T>() {
+                @Override
+                protected void updateItem(T item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (item == null || empty) {
+                        setText(null);
+                        setGraphic(null);
+                    } else {
+                        setText(item.toString());
+                        setAlignment(Pos.CENTER);
+                    }
+                }
+            };
+            return cell;
+        });
+    }
+
 
     private void loadCourseData(Course course) {
         // Set course info and average rating
@@ -71,6 +129,7 @@ public class CourseReviewsController {
                 .toList();
         reviews.addAll( courseReviews);
         reviewsListView.setItems(reviews);
+        reviewsTableView.setItems(reviews);
 
         // Setting a cell factory
         reviewsListView.setCellFactory(lv -> new ListCell<Review>() {
@@ -81,7 +140,7 @@ public class CourseReviewsController {
                     setText(null);
                 } else {
                     setText(review.getCourse().getMnemonic() + " " + review.getCourse().getCourseNumber() +
-                            " - Rating: " + review.getRating() + " Review: " + review.getComment());
+                            " - Rating: " + review.getRating() + " Review: " + review.getComment() + " " + review.getTimestamp());
                 }
             }
         });
@@ -100,7 +159,7 @@ public class CourseReviewsController {
     @FXML
     private void handleDeleteReview() {
         // Logic to delete the user's review from the database
-
+        System.out.println("this was selected to be deleted" + selectedReview.getCourse() + selectedReview.getComment());
     }
 
     @FXML
