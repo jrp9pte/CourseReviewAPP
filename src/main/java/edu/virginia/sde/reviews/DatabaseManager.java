@@ -213,18 +213,20 @@ public class DatabaseManager {
         }
     }
 
-    public static void addCourse(String mnemonic, int courseNumber, String courseTitle, double courseRating, List<Review> reviews) {
+    public static void addCourse(String mnemonic, int courseNumber, String courseTitle, int courseRating, List<Review> reviews) {
         Session session = null;
         Transaction transaction = null;
         try {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
 
-            Course newCourse = new Course(null, mnemonic, courseNumber, courseTitle, courseRating, reviews);
-            //Course newCourse = new Course(courseID, mnemonic, courseNumber, courseTitle, courseRating, reviews);
+            //Course newCourse = new Course(null, mnemonic, courseNumber, courseTitle, courseRating, reviews);
+              Course newCourse = new Course(null, mnemonic, courseNumber, courseTitle, courseRating, reviews);
+
             session.save(newCourse);
 
             transaction.commit();
+
             System.out.println("Course added successfully");
         } catch (Exception e) {
             if (transaction != null) transaction.rollback();
@@ -398,18 +400,6 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
-
-//    public static Object getAverageRating(String courseId) {
-//        try (Session session = sessionFactory.openSession()) {
-//            return session.createQuery("SELECT c.courseRating FROM Course C WHERE C.courseId = :courseId", double.class)
-//                    .setParameter("courseId", courseId)
-//                    .uniqueResult();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
-
 
     // Call this method when closing the application gracefully closes database
     public void closeApplication() {

@@ -69,6 +69,7 @@ public class CourseSearchController {
             setCellFactoryForCourseList();
     }
 
+
     public void handleAddButton() {
         Dialog<Void> dialog = new Dialog<>();
         dialog.setTitle("Add Course");
@@ -98,14 +99,30 @@ public class CourseSearchController {
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == ButtonType.OK) {
                 courseMnemonic = addCourseMnemonic.getText();
-                courseNumber = Integer.parseInt(addCourseNumber.getText());
+                if (!Objects.equals(addCourseNumber.getText(), "")) {
+                    courseNumber = Integer.parseInt(addCourseNumber.getText());
+                }
                 courseTitle = addCourseTitle.getText();
-                newCourseRating = Integer.parseInt(addNewCourseRating.getText());
+                if (!Objects.equals(addNewCourseRating.getText(), "")) {
+                    newCourseRating = Integer.parseInt(addNewCourseRating.getText());
+                }
 
-                if (!Objects.equals(addCourseMnemonic.getText(), "") && !Objects.equals(addCourseNumber.getText(), "") && !Objects.equals(addCourseTitle.getText(), "")) {
-                    // add the added class to the list
+//                if(!Objects.equals(addCourseMnemonic.getText(), "") && !Objects.equals(addCourseNumber.getText(), "") && !Objects.equals(addCourseTitle.getText(), "")) {
+                if (courseMnemonic.matches("[A-Za-z]{2,4}") && String.valueOf(courseNumber).matches("[0-9]{4}") && courseTitle.matches("[A-Za-z0-9\\s]{1,49}")) {
+                    if (!courseMnemonic.matches("[A-Za-z]{2,4}")) {
+                        System.out.println("FAILED adding mnemonic");
+                    }
+                    if (!String.valueOf(courseNumber).matches("[0-9]{4}")) {
+                        System.out.println("FAILED adding course number");
+                    }
+                    if (!courseTitle.matches("[A-Za-z0-9\\s]{1,49}")) {
+                        System.out.println("FAILED adding course title");
+                    }
+//                    if (!String.valueOf(newCourseRating).matches("[0-5]{1}")) {
+//                        System.out.println("FAILED adding course review");
+//                    }
 
-                    String formattedRow = String.format("%-10s %-10s %-30s %-10s",courseMnemonic, courseNumber, courseTitle, newCourseRating);
+                    String formattedRow = String.format("%-10s %-10s %-30s %-10s", courseMnemonic.toUpperCase(), courseNumber, courseTitle, newCourseRating);
                     DatabaseManager.addCourse(courseMnemonic, courseNumber, courseTitle, newCourseRating, null);
                     ObservableList<String> searchResults = FXCollections.observableArrayList(formattedRow);
                     CourseSearchList.setItems(searchResults);
