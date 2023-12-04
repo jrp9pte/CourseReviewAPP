@@ -1,6 +1,9 @@
 package edu.virginia.sde.reviews;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -8,10 +11,13 @@ import javafx.scene.control.ListCell;
 import javafx.scene.input.MouseEvent;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.stage.Stage;
+
 import java.io.IOException;
 
 public class MyReviewsController {
-    private HelloWorldApplication mainApp;
+    private CourseReviewsApplication mainApp;
+    private Stage stage;
 
     @FXML
     private ListView<Review> reviewsListView;
@@ -27,14 +33,10 @@ public class MyReviewsController {
 
     // Method to load reviews into the ListView
     private void loadReviews() {
-        ObservableList<Review> reviews = FXCollections.observableArrayList(
-                new Review("CS", 101, 4, "Great introduction to computer science!"),
-                new Review("HIST", 202, 5, "In-depth and fascinating historical perspectives."),
-                new Review("MATH", 303, 3, "Challenging course but very rewarding."),
-                new Review("BIO", 404, 2, "Course was too fast-paced and lacked detailed explanations.")
-        );
-        // TODO: Populate 'reviews' with the database
-
+        DatabaseManager database = new DatabaseManager();
+        database.initializeHibernate();
+        ObservableList<Review> reviews  = FXCollections.observableArrayList();
+        database.getAllReviews().forEach(review -> reviews.add(review));
         reviewsListView.setItems(reviews);
 
         // Setting a cell factory
@@ -45,8 +47,8 @@ public class MyReviewsController {
                 if (empty || review == null) {
                     setText(null);
                 } else {
-                    setText(review.getCourseMnemonic() + " " + review.getCourseNumber() +
-                            " - Rating: " + review.getRating() + " Review: " + review.getReview());
+                    setText(review.getCourse().getMnemonic() + " " + review.getCourse().getCourseNumber() +
+                            " - Rating: " + review.getRating() + " Review: " + review.getRating());
                 }
             }
         });
@@ -65,16 +67,25 @@ public class MyReviewsController {
     // Event handler for the back button
     @FXML
     private void handleBackButton() throws IOException {
+        // Logic to return to the Course Search Screen
         try {
-            mainApp.loadHelloWorldScene();
-        } catch (IOException e) {
+            // Load the course search screen
+            Parent courseSearchRoot = FXMLLoader.load(getClass().getResource("course-search.fxml"));
+            Scene courseSearchScene = new Scene(courseSearchRoot);
+
+            // Set the course search scene on the stage
+            stage.setScene(courseSearchScene);
+            stage.show();
+        } catch (Exception e) {
             e.printStackTrace();
-            // Handle exceptions
         }
     }
 
 
-    public void setMainApp(HelloWorldApplication mainApp) {
-        this.mainApp = mainApp;
+//    public void setMainApp(HelloWorldApplication mainApp) {
+//        this.mainApp = mainApp;
+//    }
+    public void setStage(Stage stage){
+        this.stage = stage;
     }
 }
