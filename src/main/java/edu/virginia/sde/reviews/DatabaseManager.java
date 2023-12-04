@@ -376,7 +376,7 @@ public class DatabaseManager {
         }
     }
 
-    public static void addReview(User detachedUser, Course detachedCourse, int rating, String timestamp, String comment) {
+    public static void addReview(User detachedUser, Course detachedCourse, int rating, Timestamp timestamp, String comment) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
