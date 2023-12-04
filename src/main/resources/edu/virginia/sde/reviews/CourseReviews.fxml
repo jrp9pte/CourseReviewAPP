@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox prefHeight="484.0" prefWidth="509.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.virginia.sde.reviews.CourseReviewsController">
+   <VBox>
+      <Label fx:id="courseInfoLabel" text="Course Info" />
+      <Label fx:id="averageRatingLabel" text="Average Rating" />
+      <ListView fx:id="reviewsListView" prefHeight="275.0" prefWidth="509.0" />
+      <TableView fx:id="reviewsTableView">
+         <columns>
+            <TableColumn fx:id="ratingColumn" text="Rating"/>
+            <TableColumn fx:id="commentColumn" text="Comment"/>
+            <TableColumn fx:id="timestampColumn" text="Timestamp"/>
+         </columns>
+      </TableView>
+   </VBox>
+   <VBox>
+      <Label  text="Your Review" />
+      <VBox>
+         <Label  text= "Your Rating" />
+         <ComboBox fx:id="ratingComboBox" />
+      </VBox>
+      <VBox>
+         <Label  text= "Your Comment" />
+         <TextArea fx:id="commentTextArea" promptText="Enter your comment" />
+      </VBox>
+
+   </VBox>
+   <VBox>
+      <Button onAction="#handleSubmitReview" text="Submit Review" />
+      <Button onAction="#handleDeleteReview" text="Delete Review" />
+      <Button onAction="#handleBackButton" text="Back" />
+   </VBox>
+</VBox>
