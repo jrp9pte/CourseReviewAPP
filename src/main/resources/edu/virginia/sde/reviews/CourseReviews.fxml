@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox prefHeight="484.0" prefWidth="509.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.2-ea" fx:controller="edu.virginia.sde.reviews.CourseReviewsController">
+   <Label fx:id="courseInfoLabel" text="Course Info"/>
+   <Label fx:id="averageRatingLabel" text="Average Rating"/>
+   <ListView fx:id="reviewsListView"/>
+   <ComboBox fx:id="ratingComboBox"/>
+   <TextArea fx:id="commentTextArea" promptText="Enter your comment"/>
+   <Button text="Submit Review" onAction="#handleSubmitReview"/>
+   <Button text="Delete Review" onAction="#handleDeleteReview"/>
+   <Button text="Back" onAction="#handleBackButton"/>
+</VBox>

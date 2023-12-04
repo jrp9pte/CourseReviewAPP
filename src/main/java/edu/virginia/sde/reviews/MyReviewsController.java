@@ -35,7 +35,7 @@ public class MyReviewsController {
     // Method to load reviews into the ListView
     private void loadReviews() {
 //        DatabaseManager database = new DatabaseManager();
-
+// Need to change to only get my reviews ( current user's reviews)
         DatabaseManager.initializeHibernate();
         ObservableList<Review> reviews  = FXCollections.observableArrayList();
         reviews.addAll(Objects.requireNonNull(DatabaseManager.getAllReviews()));
@@ -50,7 +50,7 @@ public class MyReviewsController {
                     setText(null);
                 } else {
                     setText(review.getCourse().getMnemonic() + " " + review.getCourse().getCourseNumber() +
-                            " - Rating: " + review.getRating() + " Review: " + review.getRating());
+                            " - Rating: " + review.getRating() + " Review: " + review.getComment());
                 }
             }
         });
@@ -70,7 +70,8 @@ public class MyReviewsController {
 
                     CourseReviewsController controller = fxmlLoader.getController();
                     controller.setStage(stage);
-                    controller.setCourse(selectedReview.getCourse());
+                    controller.initCourseData(selectedReview.getCourse());
+//                    controller.setCourse(selectedReview.getCourse());
                     stage.show();
 
                 }  catch (IOException e) {
