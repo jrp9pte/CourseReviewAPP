@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeAll;
 import edu.virginia.sde.reviews.User;
 
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public class DatabaseManager {
@@ -255,7 +256,7 @@ public class DatabaseManager {
             return null;
         }
     }
-    public static void addReview(User detachedUser, Course detachedCourse, int rating, String timestamp, String comment) {
+    public static void addReview(User detachedUser, Course detachedCourse, int rating, Timestamp timestamp, String comment) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();

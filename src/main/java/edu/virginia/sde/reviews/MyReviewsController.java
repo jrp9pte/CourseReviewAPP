@@ -25,11 +25,13 @@ public class MyReviewsController {
 
     @FXML
     private Button backButton;
+    private User user;
 
     // Method to initialize the controller
-    public void initialize() {
+    public void initialize(User user) {
         loadReviews();
         setupReviewClickListener();
+        this.user = user;
     }
 
     // Method to load reviews into the ListView
@@ -70,7 +72,7 @@ public class MyReviewsController {
 
                     CourseReviewsController controller = fxmlLoader.getController();
                     controller.setStage(stage);
-                    controller.initCourseData(selectedReview.getCourse());
+                    controller.initCourseData(selectedReview.getCourse(), user);
 //                    controller.setCourse(selectedReview.getCourse());
                     stage.show();
 

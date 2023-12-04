@@ -1,6 +1,7 @@
 package edu.virginia.sde.reviews;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "Reviews")
@@ -11,7 +12,7 @@ public class Review {
     private int id;
 
     private int rating;
-    private String timestamp;
+    private Timestamp timestamp;
     private String comment;
 
     @ManyToOne
@@ -26,20 +27,19 @@ public class Review {
 
     }
 
-    public Review(int id, int rating, String timestamp, String comment, User user, Course course) {
+    public Review(int id, int rating, Timestamp timestamp, String comment, User user, Course course) {
         this.rating = rating;
         this.timestamp = timestamp;
         this.comment = comment;
         this.user = user;
         this.course = course;
-
     }
 
     public int getRating() {
         return rating;
     }
 
-    public String getTimestamp() {
+    public Timestamp getTimestamp() {
         return timestamp;
     }
 
@@ -59,7 +59,7 @@ public class Review {
         this.rating = rating;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
     }
 
