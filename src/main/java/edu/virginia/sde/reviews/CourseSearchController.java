@@ -98,7 +98,7 @@ public class CourseSearchController {
             private Button courseReviewButton;
 
             {
-                hbox = new HBox(1000); // 1000 is the spacing between label and button
+                hbox = new HBox(370); // int is the spacing between label and button
                 label = new Label();
                 courseReviewButton = new Button("Course Review");
 
