@@ -107,11 +107,11 @@ public class DatabaseManagerTest {
         Course course2 = DatabaseManager.getCourseByMnemonicAndNumber("MATH", 201);
 
         // Add reviews by user1
-        LocalDateTime localDateTime1 = LocalDateTime.of(2023, 1, 1, 1, 1, 1, 1_000_000); // nanoseconds in the last argument
+        LocalDateTime localDateTime1 = LocalDateTime.of(2023, 1, 1, 1, 1, 1, 1_000_000);
         Timestamp timestamp1 = Timestamp.valueOf(localDateTime1);
-        LocalDateTime localDateTime2 = LocalDateTime.of(2023, 1, 2, 1, 1, 1, 1_000_000); // nanoseconds in the last argument
+        LocalDateTime localDateTime2 = LocalDateTime.of(2023, 1, 2, 1, 1, 1, 1_000_000);
         Timestamp timestamp2 = Timestamp.valueOf(localDateTime2);
-//        DatabaseManager.addReview(user1, course1, 5, timestamp1, "Excellent course");
+        DatabaseManager.addReview(user1, course1, 5, timestamp1, "Excellent course");
         DatabaseManager.addReview(user1, course2, 4, timestamp2, "Challenging but rewarding");
 
         // Fetch reviews by user1
