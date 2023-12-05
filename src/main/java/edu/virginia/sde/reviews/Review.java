@@ -27,7 +27,7 @@ public class Review {
 
     }
 
-    public Review(int id, int rating, Timestamp timestamp, String comment, User user, Course course) {
+    public Review(int rating, Timestamp timestamp, String comment, User user, Course course) {
         this.rating = rating;
         this.timestamp = timestamp;
         this.comment = comment;
@@ -39,10 +39,17 @@ public class Review {
         return rating;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public Timestamp getTimestamp() {
         return timestamp;
     }
-
+    @PrePersist
+    protected void onCreate() {
+        timestamp = new Timestamp(System.currentTimeMillis());
+    }
     public String getComment() {
         return comment;
     }
@@ -74,12 +81,17 @@ public class Review {
     public void setCourse(Course course) {
         this.course = course;
     }
-    @PrePersist
-    @PreUpdate
-    @PreRemove
-    private void updateCourseRating() {
-        course.recalculateRating();
+
+    public String toString() {
+        return "Review{" +
+                "rating=" + rating +
+                ", timestamp=" + timestamp +
+                ", comment='" + comment + '\'' +
+                ", user=" + user +
+                ", course=" + course +
+                '}';
     }
+
 
 
 

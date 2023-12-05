@@ -1,5 +1,6 @@
 package edu.virginia.sde.reviews;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -9,6 +10,10 @@ import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
 import org.junit.jupiter.api.BeforeAll;
 import edu.virginia.sde.reviews.User;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 
 import java.sql.Timestamp;
@@ -85,20 +90,50 @@ public class DatabaseManager {
 
     // Method to get reviews by user using Hibernate
     public static List<Review> getReviewsByUser(String userId) {
-        List<Review> reviews = null;
-        Transaction transaction = null;
+        List<Review> reviews = new ArrayList<>();
         try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
             Query<Review> query = session.createQuery("FROM Review r WHERE r.user.id = :userId", Review.class);
             query.setParameter("userId", userId);
             reviews = query.getResultList();
+            // Initialize any lazy-loaded collections if necessary
+            for (Review review : reviews) {
+                // Assuming Review has lazy-loaded properties that need to be accessed
+                Hibernate.initialize(review.getUser()); // if User is a lazy-loaded relationship
+                // Similarly, initialize other lazy-loaded properties if required
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return reviews;
+    }
+    public static Review getReviewById(int reviewId) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM Review r WHERE r.id = :reviewId", Review.class)
+                    .setParameter("reviewId", reviewId)
+                    .uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static void clearDatabase() {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+
+            // Delete all entries in a specific order due to dependencies
+            session.createQuery("DELETE FROM Review").executeUpdate();
+            session.createQuery("DELETE FROM Course").executeUpdate();
+            session.createQuery("DELETE FROM User").executeUpdate();
+
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) transaction.rollback();
             e.printStackTrace();
         }
-        return reviews;
     }
+
     public static boolean userExists(String username) {
         try (Session session = sessionFactory.openSession()) {
             Query<User> query = session.createQuery("FROM User U WHERE U.username = :username", User.class);
@@ -195,26 +230,33 @@ public class DatabaseManager {
             return null;
         }
     }
-    public static void updateCourse(String courseId, String newTitle) {
+    public static boolean updateCourse(String courseId, String newTitle) {
         Transaction transaction = null;
+        boolean updateSuccessful = false;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             Course course = session.get(Course.class, courseId);
+
             if (course != null) {
                 course.setCourseTitle(newTitle);
-                session.update(course);
+                session.update(course); // This is optional
                 transaction.commit();
+                updateSuccessful = true;
                 System.out.println("Course updated successfully");
             } else {
                 System.out.println("Course not found with courseId: " + courseId);
             }
         } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
+            if (transaction != null) {
+                transaction.rollback();
+            }
             e.printStackTrace();
         }
+        return updateSuccessful;
     }
 
-    public static void addCourse(String mnemonic, int courseNumber, String courseTitle, int courseRating, List<Review> reviews) {
+
+    public static void addCourse(String mnemonic, int courseNumber, String courseTitle, double courseRating, List<Review> reviews) {
         Session session = null;
         Transaction transaction = null;
         try {
@@ -222,7 +264,7 @@ public class DatabaseManager {
             transaction = session.beginTransaction();
 
             //Course newCourse = new Course(null, mnemonic, courseNumber, courseTitle, courseRating, reviews);
-              Course newCourse = new Course(null, mnemonic, courseNumber, courseTitle, courseRating, reviews);
+              Course newCourse = new Course(mnemonic, courseNumber, courseTitle, courseRating, reviews);
 
             session.save(newCourse);
 
@@ -401,30 +443,106 @@ public class DatabaseManager {
         }
     }
 
-    public static void addReview(User detachedUser, Course detachedCourse, int rating, Timestamp timestamp, String comment) {
+    public static void addReview(String username, String courseId, int rating, String comment) {
+        Transaction transaction = null;
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+
+            // Fetch the user and course from the database using their IDs
+            User user = session.get(User.class, username);
+            Course course = session.get(Course.class, courseId);
+
+            // Check if user and course exist
+            if (user == null || course == null) {
+                throw new IllegalArgumentException("User or Course not found.");
+            }
+
+            // Create a new Review instance
+            Review newReview = new Review();
+            newReview.setRating(rating);
+            newReview.setTimestamp(new Timestamp(System.currentTimeMillis()));
+            newReview.setComment(comment);
+            newReview.setUser(user);
+            newReview.setCourse(course);
+
+            // Save the new review
+            session.save(newReview);
+
+            // Commit the transaction
+            transaction.commit();
+            System.out.println("Review added successfully");
+        } catch (Exception e) {
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+            System.out.println("Failed to add review: " + e.getMessage());
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+    }
+    public static void updateReview(int reviewId, int newRating, String newComment) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
 
-            // Merge the detached entities into the session
-            User user = (User) session.merge(detachedUser);
-            Course course = (Course) session.merge(detachedCourse);
-
-            Review newReview = new Review();
-            newReview.setUser(user);
-            newReview.setCourse(course);
-            newReview.setRating(rating);
-            newReview.setTimestamp(timestamp);
-            newReview.setComment(comment);
-
-            session.save(newReview);
-            transaction.commit();
-            System.out.println("Review added successfully");
+            Review review = session.get(Review.class, reviewId);
+            if (review != null) {
+                review.setRating(newRating);
+                review.setComment(newComment);
+                session.update(review);
+                transaction.commit();
+                System.out.println("Review updated successfully");
+            } else {
+                System.out.println("Review not found with id: " + reviewId);
+            }
         } catch (Exception e) {
             if (transaction != null) transaction.rollback();
             e.printStackTrace();
         }
     }
+    public static void deleteReview(int reviewId) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+
+            Review review = session.get(Review.class, reviewId);
+            if (review != null) {
+                session.delete(review);
+                transaction.commit();
+                System.out.println("Review deleted successfully");
+            } else {
+                System.out.println("Review not found with id: " + reviewId);
+            }
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+        }
+    }
+    public static boolean hasUserReviewedCourse(String userId, String courseId) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Review> query = session.createQuery("FROM Review r WHERE r.user.id = :userId AND r.course.courseId = :courseId", Review.class);
+            query.setParameter("userId", userId);
+            query.setParameter("courseId", courseId);
+            List<Review> reviews = query.getResultList();
+            return !reviews.isEmpty();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+
+
+
+
+
+
 
     // Call this method when closing the application gracefully closes database
     public void closeApplication() {
