@@ -16,6 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Objects;
@@ -122,7 +123,7 @@ public class CourseReviewsController {
         // Load reviews from the database and display them in the ListView
         DatabaseManager.initializeHibernate();
         ObservableList<Review> reviews  = FXCollections.observableArrayList();
-//        System.out.println();
+//        System.out.println("Course Reviews:");
 //        courseReviews = Objects.requireNonNull(DatabaseManager.getAllReviews()).stream().filter(rev -> rev.getCourse().equals(course)).toList();
         courseReviews = Objects.requireNonNull(DatabaseManager.getAllReviews()).stream()
                 .filter(rev -> rev.getCourse().equals(course))
@@ -154,6 +155,26 @@ public class CourseReviewsController {
     @FXML
     private void handleSubmitReview() {
         // Logic to submit/edit review in the database
+//        if( user has already reviewed ){
+//          deleted selected review
+//        }
+//        submitNewReview(); // use current values
+    }
+
+    private void submitNewReview(){
+        // Logic to submit/edit review in the database
+//        let database chooose the id
+        if (ratingComboBox.getValue() == null) {
+            showAlert("Please select a rating.");
+            return;
+        }
+//        Need to check if user has reviewed already as well
+//        if (user has reviewed already) {
+//            showAlert("You have reviewed this course already!");
+//            return;
+//        }
+//        Review newReview = new Review(0, ratingComboBox.getValue() , new Timestamp(System.currentTimeMillis()), commentTextArea.getText(), user, course  );
+        DatabaseManager.addReview(user, course,ratingComboBox.getValue(), new Timestamp(System.currentTimeMillis()),commentTextArea.getText()  );
     }
 
     @FXML
@@ -186,5 +207,11 @@ public class CourseReviewsController {
     public void setCourse(Course course) {
         this.course = course;
     }
-
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Warning");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }
