@@ -9,9 +9,9 @@
         <VBox layoutX="50.0" layoutY="44.0" prefHeight="276.0" prefWidth="571.0">
             <children>
                 <Label fx:id="courseInfoLabel" text="Course Info" />
-                <TextField prefWidth="150.0" />
+<!--                <TextField prefWidth="150.0" />-->
                 <Label fx:id="averageRatingLabel" text="Average Rating" />
-                <TextField prefWidth="150.0" />
+<!--                <TextField prefWidth="150.0" />-->
                 <ListView fx:id="reviewsListView" prefHeight="222.0" prefWidth="532.0" VBox.vgrow="ALWAYS" />
                 <TableView fx:id="reviewsTableView" prefHeight="578.0" prefWidth="571.0">
                     <columns>

@@ -31,9 +31,9 @@ public class MyReviewsController {
 
     // Method to initialize the controller
     public void initialize(User user) {
+        this.user = user;
         loadReviews();
         setupReviewClickListener();
-        this.user = user;
     }
     public void setUser(User user){
         this.user = user;
