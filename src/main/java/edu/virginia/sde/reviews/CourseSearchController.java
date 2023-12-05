@@ -90,7 +90,7 @@ public class CourseSearchController {
         TextField addCourseMnemonic = new TextField();
         TextField addCourseNumber = new TextField();
         TextField addCourseTitle = new TextField();
-        TextField addNewCourseRating = new TextField();
+//        TextField addNewCourseRating = new TextField();
 
         gridPane.add(new Label("Course Mnemonic"), 0, 0);
         gridPane.add(addCourseMnemonic, 1, 0);
@@ -98,8 +98,8 @@ public class CourseSearchController {
         gridPane.add(addCourseNumber, 1, 1);
         gridPane.add(new Label("Course Title"), 0, 2);
         gridPane.add(addCourseTitle, 1, 2);
-        gridPane.add(new Label("Rating"), 0, 3);
-        gridPane.add(addNewCourseRating, 1, 3);
+//        gridPane.add(new Label("Rating"), 0, 3);
+//        gridPane.add(addNewCourseRating, 1, 3);
 
         dialog.getDialogPane().setContent(gridPane);
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
@@ -111,9 +111,9 @@ public class CourseSearchController {
                     courseNumber = Integer.parseInt(addCourseNumber.getText());
                 }
                 courseTitle = addCourseTitle.getText();
-                if (!Objects.equals(addNewCourseRating.getText(), "")) {
-                    newCourseRating = Integer.parseInt(addNewCourseRating.getText());
-                }
+//                if (!Objects.equals(addNewCourseRating.getText(), "")) {
+//                    newCourseRating = Integer.parseInt(addNewCourseRating.getText());
+//                }
 
 //                if(!Objects.equals(addCourseMnemonic.getText(), "") && !Objects.equals(addCourseNumber.getText(), "") && !Objects.equals(addCourseTitle.getText(), "")) {
                 if (courseMnemonic.matches("[A-Za-z]{2,4}") && String.valueOf(courseNumber).matches("[0-9]{4}") && courseTitle.matches("[A-Za-z0-9\\s]{1,49}")) {
@@ -130,8 +130,8 @@ public class CourseSearchController {
 //                        System.out.println("FAILED adding course review");
 //                    }
 
-                    String formattedRow = String.format("%-10s %-10s %-30s %-10s", courseMnemonic.toUpperCase(), courseNumber, courseTitle, newCourseRating);
-                    DatabaseManager.addCourse(courseMnemonic, courseNumber, courseTitle, newCourseRating, null);
+                    String formattedRow = String.format("%-10s %-10s %-30s %-20s", courseMnemonic.toUpperCase(), courseNumber, courseTitle, 0);
+                    DatabaseManager.addCourse(courseMnemonic, courseNumber, courseTitle, 0, null);
                     ObservableList<String> searchResults = FXCollections.observableArrayList(formattedRow);
                     CourseSearchList.setItems(searchResults);
                 } else {
