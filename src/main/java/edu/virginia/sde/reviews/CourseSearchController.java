@@ -196,7 +196,7 @@ public class CourseSearchController {
     @FXML
     protected void handleLoginNavAction(ActionEvent event) {
         try {
-            Parent logoutRoot = FXMLLoader.load(getClass().getResource("login-screen.fxml"));
+            Parent logoutRoot = FXMLLoader.load(getClass().getResource("initial-login.fxml"));
             Scene logoutScene = new Scene(logoutRoot);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
