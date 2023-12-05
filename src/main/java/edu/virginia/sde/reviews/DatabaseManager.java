@@ -237,6 +237,31 @@ public class DatabaseManager {
         }
     }
 
+    public String getcourseId(String mnemonic, int courseNumber, String courseTitle) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("SELECT C.courseId FROM Course C WHERE lower(C.mnemonic) = lower(:mnemonic) AND C.courseNumber = :number AND lower(C.courseTitle) like lower(:title)", String.class)
+                    .setParameter("mnemonic", mnemonic)
+                    .setParameter("number", courseNumber)
+                    .setParameter("title", courseTitle)
+                    .uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Course getCourseById(String courseId) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM Course C WHERE C.courseId = :courseId", Course.class)
+                    .setParameter("courseId", courseId)
+                    .uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
     public static User getUserByUsername(String username) {
         try (Session session = sessionFactory.openSession()) {
             return session.createQuery("FROM User U WHERE U.username = :username", User.class)
