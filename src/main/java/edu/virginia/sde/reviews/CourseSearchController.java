@@ -223,7 +223,7 @@ public class CourseSearchController {
 //        Sonthing like this
 //        Pass stage to this scene (use setStage function below) when called to use it here for changing scene
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CourseReviews.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("course-reviews.fxml"));
             Stage stage = new Stage();
             Scene scene = new Scene(fxmlLoader.load());
             stage.setScene(scene);
