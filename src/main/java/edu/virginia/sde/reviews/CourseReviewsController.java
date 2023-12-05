@@ -198,10 +198,11 @@ public class CourseReviewsController {
     }
 
     @FXML
-    private void handleBackButton() {
-//         Logic to return to the Course Search Screen
+    private void handleBackButton() throws IOException {
+        // Logic to return to the Course Search Screen
         try {
             // Load the course search screen
+
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("course-search.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
 

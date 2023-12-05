@@ -68,7 +68,7 @@ public class MyReviewsController {
             System.out.println("reached load reviews");
             if (selectedReview != null) {
                 try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CourseReviews.fxml"));
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("course-reviews.fxml"));
                     Scene scene = new Scene(fxmlLoader.load());
                     stage.setScene(scene);
                     stage.setTitle("Course Reviews");
@@ -122,20 +122,20 @@ public class MyReviewsController {
 
 
     // header navigation //
-    @FXML
-    protected void handleCourReviewsNavAction(ActionEvent event) {
-        try {
-            Parent cReviewsRoot = FXMLLoader.load(getClass().getResource("course-reviews.fxml"));
-            Scene cReviewsScene = new Scene(cReviewsRoot);
-
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-            stage.setScene(cReviewsScene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    @FXML
+//    protected void handleCourReviewsNavAction(ActionEvent event) {
+//        try {
+//            Parent cReviewsRoot = FXMLLoader.load(getClass().getResource("course-reviews.fxml"));
+//            Scene cReviewsScene = new Scene(cReviewsRoot);
+//
+//            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+//
+//            stage.setScene(cReviewsScene);
+//            stage.show();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     @FXML
     protected void handleCourSearchNavAction(ActionEvent event) {
