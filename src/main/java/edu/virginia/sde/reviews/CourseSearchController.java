@@ -69,7 +69,7 @@ public class CourseSearchController {
         }
             ObservableList<String> searchResults = FXCollections.observableArrayList();
             for(Course course : courseList) {
-                String displayString = String.format("%-1s %-10s %-30s",course.getMnemonic(), course.getCourseNumber(), course.getCourseTitle());
+                String displayString = String.format("%-1s %-10s %-30s %-20s",course.getMnemonic(), course.getCourseNumber(), course.getCourseTitle(),course.getCourseRating());
                 searchResults.add(displayString);
                 System.out.println(displayString);
             }
@@ -130,7 +130,7 @@ public class CourseSearchController {
 //                        System.out.println("FAILED adding course review");
 //                    }
 
-                    String formattedRow = String.format("%-10s %-10s %-30s %-10s", courseMnemonic.toUpperCase(), courseNumber, courseTitle, newCourseRating);
+                    String formattedRow = String.format("%-10s %-10s %-30s %-20s", courseMnemonic.toUpperCase(), courseNumber, courseTitle, 0);
                     DatabaseManager.addCourse(courseMnemonic, courseNumber, courseTitle, 0, null);
                     ObservableList<String> searchResults = FXCollections.observableArrayList(formattedRow);
                     CourseSearchList.setItems(searchResults);
@@ -179,7 +179,7 @@ public class CourseSearchController {
 
                         // Combine remaining tokens as CourseTitle
                         StringBuilder courseTitleBuilder = new StringBuilder();
-                        for (int i = 2; i < tokens.length; i++) {
+                        for (int i = 2; i < tokens.length - 1; i++) {
                             courseTitleBuilder.append(tokens[i]).append(" ");
                         }
                         // Remove trailing space
