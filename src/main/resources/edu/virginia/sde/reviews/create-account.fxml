@@ -40,7 +40,7 @@
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
-            <Button layoutX="444.0" layoutY="8.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="32.0" text="Exit">
+            <Button layoutX="444.0" layoutY="8.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="32.0" text="Back" onAction="#handleLoginNavAction">
                <font>
                   <Font name="SansSerif Regular" size="7.0" />
                </font>

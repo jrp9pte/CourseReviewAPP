@@ -12,6 +12,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 
 
 public class LoginScreenController {
@@ -51,7 +52,23 @@ public class LoginScreenController {
                 // Authentication failed, display an error message.
                 messageLabel.setText("Incorrect username or password.");
             }
-        }
-
     }
+
+
+    @FXML
+    protected void handleLoginNavAction(ActionEvent event) {
+        try {
+            Parent mainPageRoot = FXMLLoader.load(getClass().getResource("initial-login.fxml"));
+            Scene mainPageScene = new Scene(mainPageRoot);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            stage.setScene(mainPageScene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+}
 
