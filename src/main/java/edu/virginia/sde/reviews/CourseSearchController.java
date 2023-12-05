@@ -226,7 +226,6 @@ public class CourseSearchController {
 //        Pass stage to this scene (use setStage function below) when called to use it here for changing scene
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("course-reviews.fxml"));
-            Stage stage = new Stage();
             Scene scene = new Scene(fxmlLoader.load());
 
             stage.setScene(scene);
@@ -239,6 +238,7 @@ public class CourseSearchController {
 
             System.out.println("username");
             controller.initCourseData(currentCourse, user);
+            controller.setStage(stage);
             stage.show();
 
         }  catch (IOException e) {
@@ -267,6 +267,7 @@ public class CourseSearchController {
 
             stage.setScene(cReviewsScene);
             stage.show();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -275,12 +276,18 @@ public class CourseSearchController {
     @FXML
     protected void handleMyReviewsNavAction(ActionEvent event) {
         try {
-            Parent mReviewsRoot = FXMLLoader.load(getClass().getResource("my-reviews.fxml"));
-            Scene mReviewsScene = new Scene(mReviewsRoot);
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MyReviews.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            stage.setScene(scene);
+            stage.setTitle("My Reviews");
+            stage.show();
 
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            // Assuming MyReviewsController has a method to set the main application reference
+            MyReviewsController controller = fxmlLoader.getController();
+            controller.setStage(stage);
+            System.out.println("user is" + user);
+            controller.initialize(user);
 
-            stage.setScene(mReviewsScene);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
