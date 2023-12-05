@@ -1,35 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox prefHeight="484.0" prefWidth="509.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.virginia.sde.reviews.CourseReviewsController">
+<VBox prefHeight="446.0" prefWidth="677.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.virginia.sde.reviews.CourseReviewsController">
+   <ToolBar layoutX="376.0" layoutY="7.0" prefHeight="29.0" prefWidth="382.0">
+      <items>
+         <Button mnemonicParsing="false" text="Course Search">
+            <font>
+               <Font name="SansSerif Regular" size="10.0" />
+            </font></Button>
+         <Button mnemonicParsing="false" style="-fx-font-weight: bold" text="Course Reviews" textFill="#0055ff">
+            <font>
+               <Font name="SansSerif Regular" size="10.0" />
+            </font></Button>
+         <Button mnemonicParsing="false" text="My Reviews">
+            <font>
+               <Font name="SansSerif Regular" size="10.0" />
+            </font></Button>
+         <Button mnemonicParsing="false" text="Exit">
+            <font>
+               <Font name="SansSerif Regular" size="10.0" />
+            </font></Button>
+      </items>
+   </ToolBar>
+
+   <VBox layoutX="50.0" layoutY="66.0" prefHeight="408.0" prefWidth="571.0">
+      <children>
+         <Label fx:id="courseInfoLabel" text="Course Info" />
+         <TextField prefWidth="150.0" />
+         <Label fx:id="averageRatingLabel" text="Average Rating" />
+         <TextField prefWidth="150.0" />
+         <ListView fx:id="reviewsListView" prefHeight="222.0" prefWidth="532.0" VBox.vgrow="ALWAYS" />
+         <TableView fx:id="reviewsTableView">
+            <columns>
+               <TableColumn fx:id="ratingColumn" text="Rating" />
+               <TableColumn fx:id="commentColumn" text="Comment" />
+               <TableColumn fx:id="timestampColumn" text="Timestamp" />
+            </columns>
+         </TableView>
+      </children></VBox>
+   
    <VBox>
-      <Label fx:id="courseInfoLabel" text="Course Info" />
-      <Label fx:id="averageRatingLabel" text="Average Rating" />
-      <ListView fx:id="reviewsListView" prefHeight="275.0" prefWidth="509.0" />
-      <TableView fx:id="reviewsTableView">
-         <columns>
-            <TableColumn fx:id="ratingColumn" text="Rating"/>
-            <TableColumn fx:id="commentColumn" text="Comment"/>
-            <TableColumn fx:id="timestampColumn" text="Timestamp"/>
-         </columns>
-      </TableView>
-   </VBox>
-   <VBox>
-      <Label  text="Your Review" />
-      <VBox>
-         <Label  text= "Your Rating" />
+      <Label text="Your Review" />
+      <VBox prefHeight="43.0" prefWidth="603.0">
+         <Label text="Your Rating" />
          <ComboBox fx:id="ratingComboBox" />
       </VBox>
       <VBox>
-         <Label  text= "Your Comment" />
+         <Label text="Your Comment" />
          <TextArea fx:id="commentTextArea" promptText="Enter your comment" />
       </VBox>
 
    </VBox>
-   <VBox>
+   <VBox prefHeight="78.0" prefWidth="568.0">
       <Button onAction="#handleSubmitReview" text="Submit Review" />
       <Button onAction="#handleDeleteReview" text="Delete Review" />
       <Button onAction="#handleBackButton" text="Back" />

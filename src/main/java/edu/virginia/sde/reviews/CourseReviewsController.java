@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -185,6 +186,53 @@ public class CourseReviewsController {
 
     public void setCourse(Course course) {
         this.course = course;
+    }
+
+
+    // header navigation //
+    @FXML
+    protected void handleCourSearchNavAction(ActionEvent event) {
+        try {
+            Parent cSearchRoot = FXMLLoader.load(getClass().getResource("course-search.fxml"));
+            Scene cSearchScene = new Scene(cSearchRoot);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            stage.setScene(cSearchScene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void handleMyReviewsNavAction(ActionEvent event) {
+        try {
+            Parent mReviewsRoot = FXMLLoader.load(getClass().getResource("my-reviews.fxml"));
+            Scene mReviewsScene = new Scene(mReviewsRoot);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            stage.setScene(mReviewsScene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void handleLoginNavAction(ActionEvent event) {
+        try {
+            Parent logoutRoot = FXMLLoader.load(getClass().getResource("initial-login.fxml"));
+            Scene logoutScene = new Scene(logoutRoot);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            stage.setScene(logoutScene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
