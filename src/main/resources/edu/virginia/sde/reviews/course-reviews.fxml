@@ -40,9 +40,10 @@
             <Button onAction="#handleSubmitReview" text="Submit Review" />
         </VBox>
 
-        <ToolBar layoutX="376.0" layoutY="7.0" prefHeight="37.0" prefWidth="299.0">
+
+        <ToolBar layoutX="376.0" layoutY="7.0" prefHeight="35.0" prefWidth="310.0">
             <items>
-                <Button mnemonicParsing="false" text="Course Search">
+                <Button mnemonicParsing="false" text="Course Search" onAction="#handleCourSearchNavAction">
                     <font>
                         <Font name="SansSerif Regular" size="10.0" />
                     </font></Button>
@@ -50,16 +51,17 @@
                     <font>
                         <Font name="SansSerif Regular" size="10.0" />
                     </font></Button>
-                <Button mnemonicParsing="false" text="My Reviews">
+                <Button mnemonicParsing="false" text="My Reviews" onAction="#handleMyReviewsNavAction">
                     <font>
                         <Font name="SansSerif Regular" size="10.0" />
                     </font></Button>
-                <Button mnemonicParsing="false" text="Exit">
+                <Button mnemonicParsing="false" text="Logout" onAction="#handleLoginNavAction">
                     <font>
                         <Font name="SansSerif Regular" size="10.0" />
                     </font></Button>
             </items>
         </ToolBar>
+
       <VBox layoutX="51.0" layoutY="448.0" prefHeight="26.0" prefWidth="50.0">
          <children>
              <Button onAction="#handleBackButton" text="Back" />

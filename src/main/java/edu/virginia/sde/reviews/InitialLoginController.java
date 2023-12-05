@@ -1,5 +1,6 @@
 package edu.virginia.sde.reviews;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -42,5 +43,10 @@ public class InitialLoginController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    protected void handleExitAction(ActionEvent event) {
+        Platform.exit();
     }
 }

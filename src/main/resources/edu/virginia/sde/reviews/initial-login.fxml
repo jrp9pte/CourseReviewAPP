@@ -61,7 +61,7 @@
                   <Font name="SansSerif Regular" size="15.0" />
                </font>
             </Button>
-            <Button layoutX="444.0" layoutY="8.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="32.0" text="Exit">
+            <Button layoutX="444.0" layoutY="8.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="32.0" text="Exit" onAction="#handleExitAction">
                <font>
                   <Font name="SansSerif Regular" size="7.0" />
                </font>
