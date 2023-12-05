@@ -3,9 +3,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox prefHeight="484.0" prefWidth="509.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.2-ea" fx:controller="edu.virginia.sde.reviews.MyReviewsController">
+<VBox prefHeight="484.0" prefWidth="509.0" xmlns:fx="http://javafx.com/fxml/17.0.2-ea" xmlns="http://javafx.com/javafx/17.0.2-ea" fx:controller="edu.virginia.sde.reviews.MyReviewsController">
    <ListView fx:id="reviewsListView" prefHeight="441.0" prefWidth="509.0">
       <!-- Custom cell factory can be set in the controller to format list items -->
    </ListView>
    <Button onAction="#handleBackButton" prefHeight="26.0" prefWidth="48.0" text="Back" />
+
 </VBox>

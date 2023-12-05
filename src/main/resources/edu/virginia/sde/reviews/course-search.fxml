@@ -2,12 +2,13 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="470.0" prefWidth="636.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.virginia.sde.reviews.CourseSearchController">
+<AnchorPane prefHeight="505.0" prefWidth="677.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.virginia.sde.reviews.CourseSearchController">
    <children>
-      <VBox layoutX="50.0" layoutY="38.0" prefHeight="391.0" prefWidth="532.0">
+      <VBox layoutX="50.0" layoutY="66.0" prefHeight="408.0" prefWidth="571.0">
          <children>
-               <Label text="Search for Course" />
+               <Label text="Search for Course Mnemonic" />
                <TextField fx:id="CourseMnemonic" prefWidth="150.0" promptText="Course (ex: CS)" />
                <Label text="Search for Course Number" />
                <TextField fx:id="CourseNumber" prefWidth="150.0" promptText="Course (ex: 4201)" />
@@ -16,11 +17,32 @@
                <Button mnemonicParsing="false" onAction="#handleSearchButton" text="Search" />
                 <ListView fx:id="CourseSearchList" prefHeight="222.0" prefWidth="532.0" VBox.vgrow="ALWAYS" />
              </children></VBox>
-       <VBox layoutX="496.0" layoutY="22.0" prefHeight="34.0" prefWidth="85.0">
+       <VBox layoutX="536.0" layoutY="48.0" prefHeight="26.0" prefWidth="87.0">
            <children>
                <Button mnemonicParsing="false" onAction="#handleAddButton" prefHeight="26.0" prefWidth="86.0" text="Add Course" />
            </children>
        </VBox>
+
+      <ToolBar layoutX="326.0" layoutY="7.0" prefHeight="35.0" prefWidth="330.0">
+        <items>
+          <Button mnemonicParsing="false" style="-fx-font-weight: bold" text="Course Search" textFill="#0055ff">
+               <font>
+                  <Font name="SansSerif Regular" size="10.0" />
+               </font></Button>
+            <Button mnemonicParsing="false" text="Course Reviews" onAction="#handleCourReviewsNavAction">
+               <font>
+                  <Font name="SansSerif Regular" size="10.0" />
+               </font></Button>
+            <Button mnemonicParsing="false" text="My Reviews" onAction="#handleMyReviewsNavAction">
+               <font>
+                  <Font name="SansSerif Regular" size="10.0" />
+               </font></Button>
+            <Button mnemonicParsing="false" text="Logout" onAction="#handleLoginNavAction">
+               <font>
+                  <Font name="SansSerif Regular" size="10.0" />
+               </font></Button>
+        </items>
+      </ToolBar>
    </children>
 
 </AnchorPane>

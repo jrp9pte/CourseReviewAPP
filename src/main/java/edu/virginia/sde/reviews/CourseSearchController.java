@@ -5,6 +5,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.event.ActionEvent;
@@ -90,7 +92,7 @@ public class CourseSearchController {
         TextField addCourseMnemonic = new TextField();
         TextField addCourseNumber = new TextField();
         TextField addCourseTitle = new TextField();
-        TextField addNewCourseRating = new TextField();
+//        TextField addNewCourseRating = new TextField();
 
         gridPane.add(new Label("Course Mnemonic"), 0, 0);
         gridPane.add(addCourseMnemonic, 1, 0);
@@ -98,8 +100,8 @@ public class CourseSearchController {
         gridPane.add(addCourseNumber, 1, 1);
         gridPane.add(new Label("Course Title"), 0, 2);
         gridPane.add(addCourseTitle, 1, 2);
-        gridPane.add(new Label("Rating"), 0, 3);
-        gridPane.add(addNewCourseRating, 1, 3);
+//        gridPane.add(new Label("Rating"), 0, 3);
+//        gridPane.add(addNewCourseRating, 1, 3);
 
         dialog.getDialogPane().setContent(gridPane);
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
@@ -111,9 +113,9 @@ public class CourseSearchController {
                     courseNumber = Integer.parseInt(addCourseNumber.getText());
                 }
                 courseTitle = addCourseTitle.getText();
-                if (!Objects.equals(addNewCourseRating.getText(), "")) {
-                    newCourseRating = Integer.parseInt(addNewCourseRating.getText());
-                }
+//                if (!Objects.equals(addNewCourseRating.getText(), "")) {
+//                    newCourseRating = Integer.parseInt(addNewCourseRating.getText());
+//                }
 
 //                if(!Objects.equals(addCourseMnemonic.getText(), "") && !Objects.equals(addCourseNumber.getText(), "") && !Objects.equals(addCourseTitle.getText(), "")) {
                 if (courseMnemonic.matches("[A-Za-z]{2,4}") && String.valueOf(courseNumber).matches("[0-9]{4}") && courseTitle.matches("[A-Za-z0-9\\s]{1,49}")) {
@@ -130,10 +132,12 @@ public class CourseSearchController {
 //                        System.out.println("FAILED adding course review");
 //                    }
 
-                    String formattedRow = String.format("%-10s %-10s %-30s %-10s", courseMnemonic.toUpperCase(), courseNumber, courseTitle, newCourseRating);
-                    DatabaseManager.addCourse(courseMnemonic, courseNumber, courseTitle, newCourseRating, null);
+                    String formattedRow = String.format("%-10s %-10s %-30s %-20s", courseMnemonic.toUpperCase(), courseNumber, courseTitle, 0);
+                    DatabaseManager.addCourse(courseMnemonic, courseNumber, courseTitle, 0, null);
                     ObservableList<String> searchResults = FXCollections.observableArrayList(formattedRow);
                     CourseSearchList.setItems(searchResults);
+                    setCellFactoryForCourseList();
+
                 } else {
                     Dialog<Void> invalidCourseDialog = new Dialog<>();
                     invalidCourseDialog.setTitle("Invalid Course Credentials");
@@ -222,23 +226,17 @@ public class CourseSearchController {
 //        Pass stage to this scene (use setStage function below) when called to use it here for changing scene
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CourseReviews.fxml"));
-            Stage stage = new Stage();
             Scene scene = new Scene(fxmlLoader.load());
+
             stage.setScene(scene);
             stage.setTitle("Course Reviews");
-
-            System.out.println("testing 1");
 
             CourseReviewsController controller = fxmlLoader.getController();
             controller.setStage(stage);
 
-            System.out.println("testing 2");
-
             Course currentCourse = databaseManager.getCourseById(currentCourseId);
-//            String username = user.getUsername();
+
             System.out.println("username");
-//            User currentUser = databaseManager.getUserByUsername(username);
-            System.out.println("testing 3");
             controller.initCourseData(currentCourse, user);
             stage.show();
 
@@ -253,6 +251,54 @@ public class CourseSearchController {
     }
     public void setUser(User user){
         this.user = user;
+    }
+
+
+
+    // header navigation //
+    @FXML
+    protected void handleCourReviewsNavAction(ActionEvent event) {
+        try {
+            Parent cReviewsRoot = FXMLLoader.load(getClass().getResource("course-reviews.fxml"));
+            Scene cReviewsScene = new Scene(cReviewsRoot);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            stage.setScene(cReviewsScene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void handleMyReviewsNavAction(ActionEvent event) {
+        try {
+            Parent mReviewsRoot = FXMLLoader.load(getClass().getResource("my-reviews.fxml"));
+            Scene mReviewsScene = new Scene(mReviewsRoot);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            stage.setScene(mReviewsScene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void handleLoginNavAction(ActionEvent event) {
+        try {
+            Parent logoutRoot = FXMLLoader.load(getClass().getResource("initial-login.fxml"));
+            Scene logoutScene = new Scene(logoutRoot);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            stage.setScene(logoutScene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

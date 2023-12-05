@@ -11,6 +11,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class CreateAccountController {
     @FXML
     private TextField usernameField; // TextField for username input
@@ -47,5 +49,20 @@ public class CreateAccountController {
         alert.setHeaderText(null);
         alert.setContentText(response);
         alert.showAndWait();
+    }
+
+    @FXML
+    protected void handleLoginNavAction(ActionEvent event) {
+        try {
+            Parent mainPageRoot = FXMLLoader.load(getClass().getResource("initial-login.fxml"));
+            Scene mainPageScene = new Scene(mainPageRoot);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            stage.setScene(mainPageScene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
