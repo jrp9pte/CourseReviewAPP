@@ -24,6 +24,9 @@
 
         <VBox layoutX="52.0" layoutY="321.0" prefHeight="117.0" prefWidth="571.0">
             <Label text="Your Review" />
+            <Label prefHeight="48.0" prefWidth="511.0"
+                   text="Select a review of yours to edit or delete. If you haven't created a review yet, simply enter one below and click submit"
+                   wrapText="true" />
             <VBox prefHeight="43.0" prefWidth="603.0">
                 <Label text="Your Rating" />
                 <ComboBox fx:id="ratingComboBox" />
