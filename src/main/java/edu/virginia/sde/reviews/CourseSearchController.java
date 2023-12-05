@@ -5,6 +5,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.event.ActionEvent;
@@ -253,6 +255,54 @@ public class CourseSearchController {
     }
     public void setUser(User user){
         this.user = user;
+    }
+
+
+
+    // header navigation //
+    @FXML
+    protected void handleCourReviewsNavAction(ActionEvent event) {
+        try {
+            Parent cReviewsRoot = FXMLLoader.load(getClass().getResource("course-reviews.fxml"));
+            Scene cReviewsScene = new Scene(cReviewsRoot);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            stage.setScene(cReviewsScene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void handleMyReviewsNavAction(ActionEvent event) {
+        try {
+            Parent mReviewsRoot = FXMLLoader.load(getClass().getResource("my-reviews.fxml"));
+            Scene mReviewsScene = new Scene(mReviewsRoot);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            stage.setScene(mReviewsScene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void handleLoginNavAction(ActionEvent event) {
+        try {
+            Parent logoutRoot = FXMLLoader.load(getClass().getResource("initial-login.fxml"));
+            Scene logoutScene = new Scene(logoutRoot);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            stage.setScene(logoutScene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
