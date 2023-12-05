@@ -23,16 +23,16 @@
            </children>
        </VBox>
 
-      <ToolBar layoutX="326.0" layoutY="7.0" prefHeight="35.0" prefWidth="330.0">
+      <ToolBar layoutX="426.0" layoutY="7.0" prefHeight="35.0" prefWidth="230.0">
         <items>
           <Button mnemonicParsing="false" style="-fx-font-weight: bold" text="Course Search" textFill="#0055ff">
                <font>
                   <Font name="SansSerif Regular" size="10.0" />
                </font></Button>
-            <Button mnemonicParsing="false" text="Course Reviews" onAction="#handleCourReviewsNavAction">
-               <font>
-                  <Font name="SansSerif Regular" size="10.0" />
-               </font></Button>
+<!--            <Button mnemonicParsing="false" text="Course Reviews" onAction="#handleCourReviewsNavAction">-->
+<!--               <font>-->
+<!--                  <Font name="SansSerif Regular" size="10.0" />-->
+<!--               </font></Button>-->
             <Button mnemonicParsing="false" text="My Reviews" onAction="#handleMyReviewsNavAction">
                <font>
                   <Font name="SansSerif Regular" size="10.0" />

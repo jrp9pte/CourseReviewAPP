@@ -264,7 +264,7 @@ public class DatabaseManager {
             transaction = session.beginTransaction();
 
             //Course newCourse = new Course(null, mnemonic, courseNumber, courseTitle, courseRating, reviews);
-              Course newCourse = new Course(mnemonic, courseNumber, courseTitle, courseRating, reviews);
+              Course newCourse = new Course(mnemonic.toUpperCase(), courseNumber, courseTitle, courseRating, reviews);
 
             session.save(newCourse);
 
