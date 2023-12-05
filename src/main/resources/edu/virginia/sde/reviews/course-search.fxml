@@ -7,7 +7,7 @@
    <children>
       <VBox layoutX="50.0" layoutY="38.0" prefHeight="391.0" prefWidth="532.0">
          <children>
-               <Label text="Search for Course" />
+               <Label text="Search for Course Mnemonic" />
                <TextField fx:id="CourseMnemonic" prefWidth="150.0" promptText="Course (ex: CS)" />
                <Label text="Search for Course Number" />
                <TextField fx:id="CourseNumber" prefWidth="150.0" promptText="Course (ex: 4201)" />
