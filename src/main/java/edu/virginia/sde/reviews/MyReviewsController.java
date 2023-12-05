@@ -36,11 +36,9 @@ public class MyReviewsController {
 
     // Method to load reviews into the ListView
     private void loadReviews() {
-//        DatabaseManager database = new DatabaseManager();
-// Need to change to only get my reviews ( current user's reviews)
         DatabaseManager.initializeHibernate();
         ObservableList<Review> reviews  = FXCollections.observableArrayList();
-        reviews.addAll(Objects.requireNonNull(DatabaseManager.getAllReviews()));
+        reviews.addAll(Objects.requireNonNull(DatabaseManager.getReviewsByUser(user.getId())));
         reviewsListView.setItems(reviews);
 
         // Setting a cell factory
@@ -93,12 +91,16 @@ public class MyReviewsController {
         // Logic to return to the Course Search Screen
         try {
             // Load the course search screen
-            Parent courseSearchRoot = FXMLLoader.load(getClass().getResource("course-search.fxml"));
-            Scene courseSearchScene = new Scene(courseSearchRoot);
+
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("course-search.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
 
             // Set the course search scene on the stage
-            stage.setScene(courseSearchScene);
+            stage.setScene(scene);
             stage.setTitle("Course Search");
+            CourseSearchController controller = fxmlLoader.getController();
+            controller.setStage(stage);
+            controller.setUser(user);
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
