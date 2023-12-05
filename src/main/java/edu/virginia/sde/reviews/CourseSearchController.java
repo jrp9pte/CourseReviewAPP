@@ -29,6 +29,7 @@ public class CourseSearchController {
     private String courseTitle;
 
     private Stage stage;
+    private String username;
     public void handleSearchButton() {
 
         String mnemonicSearch = CourseMnemonic.getText();
@@ -144,7 +145,7 @@ public class CourseSearchController {
 //
 //            CourseReviewsController controller = fxmlLoader.getController();
 //            controller.setStage(stage);
-//            controller.initCourseData(selectedReview.getCourse());
+////            controller.initCourseData(selectedReview.getCourse());
 ////                    controller.setCourse(selectedReview.getCourse());
 //            stage.show();
 //
@@ -156,6 +157,9 @@ public class CourseSearchController {
     }
     public void setStage(Stage stage){
         this.stage = stage;
+    }
+    public void setUsername(String username){
+        this.username = username;
     }
 
 }
