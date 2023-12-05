@@ -37,8 +37,8 @@ public class CourseSearchController {
 
     private Stage stage;
     private DatabaseManager databaseManager = new DatabaseManager();
-    private User user = new User();
-  
+    private User user;
+
     public void handleSearchButton() {
 
         String mnemonicSearch = CourseMnemonic.getText();
@@ -235,11 +235,11 @@ public class CourseSearchController {
             System.out.println("testing 2");
 
             Course currentCourse = databaseManager.getCourseById(currentCourseId);
-            String username = user.getUsername();
+//            String username = user.getUsername();
             System.out.println("username");
-            User currentUser = databaseManager.getUserByUsername(username);
+//            User currentUser = databaseManager.getUserByUsername(username);
             System.out.println("testing 3");
-            controller.initCourseData(currentCourse, currentUser);
+            controller.initCourseData(currentCourse, user);
             stage.show();
 
         }  catch (IOException e) {
@@ -250,6 +250,9 @@ public class CourseSearchController {
     }
     public void setStage(Stage stage){
         this.stage = stage;
+    }
+    public void setUser(User user){
+        this.user = user;
     }
 
 }

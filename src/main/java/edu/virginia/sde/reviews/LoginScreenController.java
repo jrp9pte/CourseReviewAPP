@@ -35,15 +35,36 @@ public class LoginScreenController {
                 // User is authenticated, navigate to the course search screen
                 try {
                     // Load the course search screen
-                    Parent courseSearchRoot = FXMLLoader.load(getClass().getResource("course-search.fxml"));
-                    Scene courseSearchScene = new Scene(courseSearchRoot);
+//                    Parent courseSearchRoot = FXMLLoader.load(getClass().getResource("course-search.fxml"));
+//                    Scene courseSearchScene = new Scene(courseSearchRoot);
+
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("course-search.fxml"));
+                    Scene scene = new Scene(fxmlLoader.load());
 
                     // Get the stage from the event source
                     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
                     // Set the course search scene on the stage
-                    stage.setScene(courseSearchScene);
+                    stage.setScene(scene);
+                    stage.setTitle("Course Search");
+                    CourseSearchController controller = fxmlLoader.getController();
+                    controller.setStage(stage);
+                    User user = new User(username, password);
+                    controller.setUser(user);
+//                    controller.initialize(username);
                     stage.show();
+
+
+
+
+
+                    stage.show();
+
+                    // Assuming MyReviewsController has a method to set the main application reference
+//                    CourseSearchController controller = fxmlLoader.getController();
+//                    controller.setStage(stage);
+//                    controller.initialize(user);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

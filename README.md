@@ -5,7 +5,7 @@
 1) Laura Abood, axu8rx, labood230
 2) Krish Sahoo, ks5tj, ks5tj
 3) Jay Patel, jrp9pte, [jrp9pte]
-4) Name, netid, [GitHub profile name]
+4) Zayda Deese, wmg2zk, deezayda
 
 ## To Run
 
@@ -33,11 +33,10 @@ List the primary contributions of each author. It is recommended to update this 
 * as a bulleted list
 * each line starts with an asterisk and a space
 
-### [Author 4 - replace this with their name]
+### Zayda Deese
 
-* Author 4 contributions
-* as a bulleted list
-* each line starts with an asterisk and a space
+* Course Search
+* Course Add
 
 ## Issues
 
