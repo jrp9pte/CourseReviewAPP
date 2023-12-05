@@ -136,6 +136,8 @@ public class CourseSearchController {
                     DatabaseManager.addCourse(courseMnemonic, courseNumber, courseTitle, 0, null);
                     ObservableList<String> searchResults = FXCollections.observableArrayList(formattedRow);
                     CourseSearchList.setItems(searchResults);
+                    setCellFactoryForCourseList();
+
                 } else {
                     Dialog<Void> invalidCourseDialog = new Dialog<>();
                     invalidCourseDialog.setTitle("Invalid Course Credentials");
@@ -224,23 +226,17 @@ public class CourseSearchController {
 //        Pass stage to this scene (use setStage function below) when called to use it here for changing scene
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CourseReviews.fxml"));
-            Stage stage = new Stage();
             Scene scene = new Scene(fxmlLoader.load());
+
             stage.setScene(scene);
             stage.setTitle("Course Reviews");
-
-            System.out.println("testing 1");
 
             CourseReviewsController controller = fxmlLoader.getController();
             controller.setStage(stage);
 
-            System.out.println("testing 2");
-
             Course currentCourse = databaseManager.getCourseById(currentCourseId);
-//            String username = user.getUsername();
+
             System.out.println("username");
-//            User currentUser = databaseManager.getUserByUsername(username);
-            System.out.println("testing 3");
             controller.initCourseData(currentCourse, user);
             stage.show();
 
