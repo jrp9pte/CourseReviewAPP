@@ -263,8 +263,6 @@ public class CourseSearchController {
             Parent cReviewsRoot = FXMLLoader.load(getClass().getResource("course-reviews.fxml"));
             Scene cReviewsScene = new Scene(cReviewsRoot);
 
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
             stage.setScene(cReviewsScene);
             stage.show();
 
