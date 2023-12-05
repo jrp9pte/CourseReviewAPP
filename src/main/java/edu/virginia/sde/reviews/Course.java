@@ -29,7 +29,7 @@ public class Course {
     // Constructors
     public Course() {}
 
-    public Course(String courseId, String mnemonic, int courseNumber, String courseTitle, double courseRating, List<Review> reviews) {
+    public Course(String mnemonic, int courseNumber, String courseTitle, double courseRating, List<Review> reviews) {
         //this.courseId = courseId;
         this.mnemonic = mnemonic;
         this.courseNumber = courseNumber;

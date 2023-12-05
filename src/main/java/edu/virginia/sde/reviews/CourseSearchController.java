@@ -37,8 +37,8 @@ public class CourseSearchController {
 
     private Stage stage;
     private DatabaseManager databaseManager = new DatabaseManager();
+    private User user = new User();
 
-    private String username;
     public void handleSearchButton() {
 
         String mnemonicSearch = CourseMnemonic.getText();
@@ -167,7 +167,31 @@ public class CourseSearchController {
                 courseReviewButton.setOnAction(event -> {
                     // Call the linked action using the course information
                     String courseInfo = getItem();
-                    handleLinkedButtonAction(courseInfo);
+
+                    // Split the course information into tokens
+                    String[] tokens = courseInfo.split("\\s+");
+
+                    // Ensure that there are at least 3 tokens (Mnemonic, CourseNumber, CourseTitle)
+                    if (tokens.length >= 3) {
+                        // Extract values from tokens
+                        String mnemonic = tokens[0];
+                        int courseNumber = Integer.parseInt(tokens[1]);
+
+                        // Combine remaining tokens as CourseTitle
+                        StringBuilder courseTitleBuilder = new StringBuilder();
+                        for (int i = 2; i < tokens.length - 1; i++) {
+                            courseTitleBuilder.append(tokens[i]).append(" ");
+                        }
+                        // Remove trailing space
+                        String courseTitle = courseTitleBuilder.toString().trim();
+
+                        // Use the extracted values in the getcourseID method
+                        String courseId = databaseManager.getcourseId(mnemonic, courseNumber, courseTitle);
+
+                        handleLinkedButtonAction(courseId);
+                    }
+
+
                 });
 
                 hbox.getChildren().addAll(label, spacer, courseReviewButton);
@@ -189,36 +213,46 @@ public class CourseSearchController {
         });
     }
 
-    private void handleLinkedButtonAction(String courseInfo) {
+    private void handleLinkedButtonAction(String currentCourseId) {
         // Implement the linked button action using the course information
         // when button is clicked then go to the course review scene
-        System.out.println("Linked button clicked for: " + courseInfo);
+        System.out.println("Linked button clicked for: " + currentCourseId);
 
 //        Sonthing like this
 //        Pass stage to this scene (use setStage function below) when called to use it here for changing scene
-//        try {
-//            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CourseReviews.fxml"));
-//            Scene scene = new Scene(fxmlLoader.load());
-//            stage.setScene(scene);
-//            stage.setTitle("Course Reviews");
-//
-//            CourseReviewsController controller = fxmlLoader.getController();
-//            controller.setStage(stage);
-//            controller.initCourseData(selectedReview.getCourse());
-////                    controller.setCourse(selectedReview.getCourse());
-//            stage.show();
-//
-//        }  catch (IOException e) {
-//            System.out.println("there was an Error!" +  e.getMessage() );
-//            throw new RuntimeException(e);
-//        }
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CourseReviews.fxml"));
+            Stage stage = new Stage();
+            Scene scene = new Scene(fxmlLoader.load());
+            stage.setScene(scene);
+            stage.setTitle("Course Reviews");
+
+            System.out.println("testing 1");
+
+            CourseReviewsController controller = fxmlLoader.getController();
+            controller.setStage(stage);
+
+            System.out.println("testing 2");
+
+            Course currentCourse = databaseManager.getCourseById(currentCourseId);
+            String username = user.getUsername();
+            System.out.println("username");
+            User currentUser = databaseManager.getUserByUsername(username);
+            System.out.println("testing 3");
+            controller.initCourseData(currentCourse, currentUser);
+            stage.show();
+
+        }  catch (IOException e) {
+            System.out.println("there was an Error!" +  e.getMessage() );
+            throw new RuntimeException(e);
+        }
 
     }
     public void setStage(Stage stage){
         this.stage = stage;
     }
-    public void setUsername(String username){
-        this.username = username;
+    public void setUsername(User user){
+        this.user = user;
     }
 
 }

@@ -48,4 +48,11 @@ public class User {
     public String getId() {
         return username;
     }
+
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }
