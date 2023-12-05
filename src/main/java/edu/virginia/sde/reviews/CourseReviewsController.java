@@ -220,7 +220,9 @@ public class CourseReviewsController {
     public void setStage(Stage stage) {
         this.stage = stage;
     }
-
+    public void setUser(User user){
+        this.user = user;
+    }
     public void setCourse(Course course) {
         this.course = course;
     }
@@ -237,12 +239,16 @@ public class CourseReviewsController {
     @FXML
     protected void handleCourSearchNavAction(ActionEvent event) {
         try {
-            Parent cSearchRoot = FXMLLoader.load(getClass().getResource("course-search.fxml"));
-            Scene cSearchScene = new Scene(cSearchRoot);
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("course-search.fxml"));
+            Scene cSearchScene = new Scene(fxmlLoader.load());
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
             stage.setScene(cSearchScene);
+
+            CourseSearchController controller = fxmlLoader.getController();
+            controller.setStage(stage);
+            controller.setUser(user);
+
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -252,12 +258,16 @@ public class CourseReviewsController {
     @FXML
     protected void handleMyReviewsNavAction(ActionEvent event) {
         try {
-            Parent mReviewsRoot = FXMLLoader.load(getClass().getResource("my-reviews.fxml"));
-            Scene mReviewsScene = new Scene(mReviewsRoot);
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("my-reviews.fxml"));
+            Scene mReviewsScene = new Scene(fxmlLoader.load());
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
             stage.setScene(mReviewsScene);
+
+            MyReviewsController controller = fxmlLoader.getController();
+            controller.setStage(stage);
+            controller.setUser(user);
+
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -267,12 +277,16 @@ public class CourseReviewsController {
     @FXML
     protected void handleLoginNavAction(ActionEvent event) {
         try {
-            Parent logoutRoot = FXMLLoader.load(getClass().getResource("initial-login.fxml"));
-            Scene logoutScene = new Scene(logoutRoot);
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("initial-login.fxml"));
+            Scene logoutScene = new Scene(fxmlLoader.load());
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
             stage.setScene(logoutScene);
+
+            LoginScreenController controller = fxmlLoader.getController();
+            controller.setStage(stage);
+            controller.setUser(user);
+
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

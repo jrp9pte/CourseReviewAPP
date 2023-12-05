@@ -25,6 +25,10 @@ public class LoginScreenController {
     @FXML
     private TextField passwordField;
 
+    private Stage stage;
+
+    private User user;
+
     @FXML
     private void authenticateUser(ActionEvent event) {
             String username = usernameField.getText();
@@ -75,6 +79,12 @@ public class LoginScreenController {
             }
     }
 
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+    public void setUser(User user){
+        this.user = user;
+    }
 
     @FXML
     protected void handleLoginNavAction(ActionEvent event) {

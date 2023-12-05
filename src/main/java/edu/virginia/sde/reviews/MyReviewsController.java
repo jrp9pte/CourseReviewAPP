@@ -35,6 +35,9 @@ public class MyReviewsController {
         setupReviewClickListener();
         this.user = user;
     }
+    public void setUser(User user){
+        this.user = user;
+    }
 
     // Method to load reviews into the ListView
     private void loadReviews() {
