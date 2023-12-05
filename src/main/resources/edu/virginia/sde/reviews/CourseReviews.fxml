@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -11,25 +10,28 @@
       <ListView fx:id="reviewsListView" prefHeight="275.0" prefWidth="509.0" />
       <TableView fx:id="reviewsTableView">
          <columns>
-            <TableColumn fx:id="ratingColumn" text="Rating"/>
-            <TableColumn fx:id="commentColumn" text="Comment"/>
-            <TableColumn fx:id="timestampColumn" text="Timestamp"/>
+            <TableColumn fx:id="ratingColumn" text="Rating" />
+            <TableColumn fx:id="commentColumn" text="Comment" />
+            <TableColumn fx:id="timestampColumn" text="Timestamp" />
          </columns>
       </TableView>
    </VBox>
    <VBox>
-      <Label  text="Your Review" />
+      <Label text="Your Review" />
       <VBox>
-         <Label  text= "Your Rating" />
+         <Label text="Your Rating" />
          <ComboBox fx:id="ratingComboBox" />
       </VBox>
       <VBox>
-         <Label  text= "Your Comment" />
+         <Label text="Your Comment" />
          <TextArea fx:id="commentTextArea" promptText="Enter your comment" />
       </VBox>
 
    </VBox>
    <VBox>
+      <Label prefHeight="48.0" prefWidth="511.0"
+             text="Select a review of yours to edit or delete. If you haven't created a review yet, simply enter one below and click submit"
+             wrapText="true" />
       <Button onAction="#handleSubmitReview" text="Submit Review" />
       <Button onAction="#handleDeleteReview" text="Delete Review" />
       <Button onAction="#handleBackButton" text="Back" />

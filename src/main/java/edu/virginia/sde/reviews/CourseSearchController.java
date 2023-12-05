@@ -38,7 +38,7 @@ public class CourseSearchController {
     private Stage stage;
     private DatabaseManager databaseManager = new DatabaseManager();
     private User user = new User();
-  
+
     public void handleSearchButton() {
 
         String mnemonicSearch = CourseMnemonic.getText();
@@ -250,6 +250,9 @@ public class CourseSearchController {
     }
     public void setStage(Stage stage){
         this.stage = stage;
+    }
+    public void setUsername(User user){
+        this.user = user;
     }
 
 }
