@@ -209,6 +209,94 @@ public class DatabaseManagerTest {
         Assertions.assertEquals(newRating, updatedReview.getRating(), "Rating should be updated");
         Assertions.assertEquals(newComment, updatedReview.getComment(), "Comment should be updated");
     }
+    @Test
+    public void testGetAllUsers() {
+        // Setup: Add some users
+        DatabaseManager.addNewUser("user1", "password1");
+        DatabaseManager.addNewUser("user2", "password2");
+
+        // Act: Retrieve all users
+        List<User> users = DatabaseManager.getAllUsers();
+
+        // Assert: Check if users are retrieved
+        Assertions.assertFalse(users.isEmpty(), "Users list should not be empty");
+        Assertions.assertTrue(users.stream().anyMatch(user -> "user1".equals(user.getUsername())), "User1 should be present");
+        Assertions.assertTrue(users.stream().anyMatch(user -> "user2".equals(user.getUsername())), "User2 should be present");
+    }
+    @Test
+    public void testUpdateUser() {
+        // Arrange: Add a user
+        String username = "updateUser";
+        String originalPassword = "originalPass";
+        DatabaseManager.addNewUser(username, originalPassword);
+
+        // Act: Update the user's password
+        String newPassword = "newPass";
+        DatabaseManager.updateUser(username, newPassword);
+
+        // Assert: Check if the user's password is updated
+        boolean loginSuccess = DatabaseManager.login(username, newPassword);
+        Assertions.assertTrue(loginSuccess, "User's password should be updated");
+    }
+
+    @Test
+    public void testDeleteUser() {
+        // Arrange: Add a user
+        String username = "deleteUser";
+        DatabaseManager.addNewUser(username, "password");
+
+        // Act: Delete the user
+        DatabaseManager.deleteUser(username);
+
+        // Assert: Check if the user is deleted
+        boolean userExists = DatabaseManager.userExists(username);
+        Assertions.assertFalse(userExists, "User should be deleted");
+    }
+    @Test
+    public void testGetAllCourses() {
+        // Setup: Add some courses
+        DatabaseManager.addCourse("CS", 101, "Intro to CS", 0.0, new ArrayList<>());
+        DatabaseManager.addCourse("MATH", 201, "Advanced Math", 0.0, new ArrayList<>());
+
+        // Act: Retrieve all courses
+        List<Course> courses = DatabaseManager.getAllCourses();
+
+        // Assert: Check if courses are retrieved
+        Assertions.assertFalse(courses.isEmpty(), "Courses list should not be empty");
+        Assertions.assertTrue(courses.stream().anyMatch(course -> "CS".equals(course.getMnemonic()) && course.getCourseNumber() == 101), "CS 101 should be present");
+        Assertions.assertTrue(courses.stream().anyMatch(course -> "MATH".equals(course.getMnemonic()) && course.getCourseNumber() == 201), "MATH 201 should be present");
+    }
+    @Test
+    public void testUpdateCourse() {
+        // Arrange: Add a course
+        String mnemonic = "CS";
+        int courseNumber = 101;
+        String originalTitle = "Original Title";
+        DatabaseManager.addCourse(mnemonic, courseNumber, originalTitle, 0.0, new ArrayList<>());
+
+        // Retrieve the course to get its ID
+        List<Course> courses = DatabaseManager.getCourseByMnemonicAndNumber(mnemonic, courseNumber);
+        Assertions.assertFalse(courses.isEmpty(), "Courses should not be empty");
+        Course addedCourse = courses.get(0);
+        String courseId = addedCourse.getCourseId(); // Assuming courseId is an integer
+
+        // Act: Update the course title
+        String newTitle = "New Title";
+        boolean isUpdated = DatabaseManager.updateCourse(courseId, newTitle);
+        Assertions.assertTrue(isUpdated, "Course update should be successful");
+
+        // Assert: Check if the course title is updated
+        Course updatedCourse = DatabaseManager.getCourseByMnemonicAndNumber(mnemonic, courseNumber).get(0);
+        Assertions.assertEquals(newTitle, updatedCourse.getCourseTitle(), "Course title should be updated");
+    }
+
+
+
+
+
+
+
+
 
 
     @Test

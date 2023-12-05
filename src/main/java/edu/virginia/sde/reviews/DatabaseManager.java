@@ -230,24 +230,31 @@ public class DatabaseManager {
             return null;
         }
     }
-    public static void updateCourse(String courseId, String newTitle) {
+    public static boolean updateCourse(String courseId, String newTitle) {
         Transaction transaction = null;
+        boolean updateSuccessful = false;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             Course course = session.get(Course.class, courseId);
+
             if (course != null) {
                 course.setCourseTitle(newTitle);
-                session.update(course);
+                session.update(course); // This is optional
                 transaction.commit();
+                updateSuccessful = true;
                 System.out.println("Course updated successfully");
             } else {
                 System.out.println("Course not found with courseId: " + courseId);
             }
         } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
+            if (transaction != null) {
+                transaction.rollback();
+            }
             e.printStackTrace();
         }
+        return updateSuccessful;
     }
+
 
     public static void addCourse(String mnemonic, int courseNumber, String courseTitle, double courseRating, List<Review> reviews) {
         Session session = null;
