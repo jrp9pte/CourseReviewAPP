@@ -13,11 +13,10 @@ import edu.virginia.sde.reviews.User;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.UUID;
 
 public class DatabaseManager {
     private static SessionFactory sessionFactory;
-
-
 
     // Initialize the SessionFactory instance
     public static void initializeHibernate() {
@@ -71,7 +70,7 @@ public class DatabaseManager {
         if (username == null || password == null) {
             return "Username and password cannot be null.";
         }
-
+        // Initialize the SessionFactory instance
         if (userExists(username)) {
             return "Username already exists.";
         }
@@ -215,17 +214,20 @@ public class DatabaseManager {
         }
     }
 
-    public static void addCourse(String courseId, String mnemonic, int courseNumber, String courseTitle, double courseRating, List<Review> reviews) {
+    public static void addCourse(String mnemonic, int courseNumber, String courseTitle, int courseRating, List<Review> reviews) {
         Session session = null;
         Transaction transaction = null;
         try {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
 
-            Course newCourse = new Course(courseId, mnemonic, courseNumber, courseTitle, courseRating, reviews);
+            //Course newCourse = new Course(null, mnemonic, courseNumber, courseTitle, courseRating, reviews);
+              Course newCourse = new Course(null, mnemonic, courseNumber, courseTitle, courseRating, reviews);
+
             session.save(newCourse);
 
             transaction.commit();
+
             System.out.println("Course added successfully");
         } catch (Exception e) {
             if (transaction != null) transaction.rollback();
@@ -245,18 +247,136 @@ public class DatabaseManager {
             return null;
         }
     }
-    public static Course getCourseByMnemonicAndNumber(String mnemonic, int number) {
+
+    public static List<Course> getCourseByMnemonicAndNumberAndTitle(String mnemonic, int number, String title) {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("FROM Course C WHERE C.mnemonic = :mnemonic AND C.courseNumber = :number", Course.class)
+            return session.createQuery("FROM Course C WHERE C.mnemonic = :mnemonic AND C.courseNumber = :number AND C.courseTitle = :title", Course.class)
                     .setParameter("mnemonic", mnemonic)
                     .setParameter("number", number)
-                    .uniqueResult();
+                    .setParameter("title", title)
+                    .list();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
-    public static void addReview(User detachedUser, Course detachedCourse, int rating, Timestamp timestamp, String comment) {
+
+    public static List<Course> getCourseByMnemonicAndNumberAndTitleContains(String mnemonic, int number, String title) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM Course C WHERE lower(C.mnemonic) = lower(:mnemonic) AND C.courseNumber = :number AND lower(C.courseTitle) like lower(:title)", Course.class)
+                    .setParameter("mnemonic", mnemonic)
+                    .setParameter("number", number)
+                    .setParameter("title", "%" + title + "%")
+                    .list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public static List<Course> getCourseByMnemonicAndNumber(String mnemonic, int number) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM Course C WHERE lower(C.mnemonic) = lower(:mnemonic) AND C.courseNumber = :number", Course.class)
+                    .setParameter("mnemonic", mnemonic)
+                    .setParameter("number", number)
+                    .list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static List<Course> getCourseByTitleAndNumber(String title, int number) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM Course C WHERE lower(C.courseTitle) = lower(:title) AND C.courseNumber = :number", Course.class)
+                    .setParameter("title", title)
+                    .setParameter("number", number)
+                    .list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static List<Course> getCourseByTitleContainsAndNumber(String title, int number) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM Course C WHERE lower(C.courseTitle) like lower(:title) AND C.courseNumber = :number", Course.class)
+                    .setParameter("title", "%" + title + "%")
+                    .setParameter("number", number)
+                    .list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static List<Course> getCourseByMnemonicAndTitle(String mnemonic, String title) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM Course C WHERE lower(C.mnemonic) = lower(:mnemonic) AND lower(C.courseTitle) = lower(:title)", Course.class)
+                    .setParameter("mnemonic", mnemonic)
+                    .setParameter("title", title)
+                    .list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public static List<Course> getCourseByMnemonicAndTitleContains(String mnemonic, String title) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM Course C WHERE lower(C.mnemonic) = lower(:mnemonic) AND lower(C.courseTitle) like lower(:title)", Course.class)
+                    .setParameter("mnemonic", mnemonic)
+                    .setParameter("title", "%" + title + "%")
+                    .list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static List<Course> getCourseByMnemonic(String mnemonic) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM Course C WHERE lower(C.mnemonic) = lower(:mnemonic)", Course.class)
+                    .setParameter("mnemonic", mnemonic)
+                    .list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static List<Course> getCourseByNumber(int number) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM Course C WHERE C.courseNumber = :number", Course.class)
+                    .setParameter("number", number)
+                    .list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static List<Course> getCourseByTitle(String title) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM Course C WHERE lower(C.courseTitle) = lower(:title)", Course.class)
+                    .setParameter("title", title)
+                    .list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static List<Course> getCourseByTitleContains(String title) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM Course C WHERE lower(C.courseTitle) like lower(:title)", Course.class)
+                    .setParameter("title", "%" + title + "%")
+                    .list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static void addReview(User detachedUser, Course detachedCourse, int rating, String timestamp, String comment) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
@@ -280,12 +400,6 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
-
-
-
-
-
-
 
     // Call this method when closing the application gracefully closes database
     public void closeApplication() {
