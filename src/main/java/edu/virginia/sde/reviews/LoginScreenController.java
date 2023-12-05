@@ -49,7 +49,8 @@ public class LoginScreenController {
                     stage.setTitle("Course Search");
                     CourseSearchController controller = fxmlLoader.getController();
                     controller.setStage(stage);
-                    controller.setUsername(username);
+                    User user = new User(username, password);
+                    controller.setUser(user);
 //                    controller.initialize(username);
                     stage.show();
 
