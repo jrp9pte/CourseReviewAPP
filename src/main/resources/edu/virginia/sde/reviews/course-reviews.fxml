@@ -12,7 +12,7 @@
 <!--                <TextField prefWidth="150.0" />-->
                 <Label fx:id="averageRatingLabel" text="Average Rating" textFill="WHITE" />
 <!--                <TextField prefWidth="150.0" />-->
-                <ListView fx:id="reviewsListView" prefHeight="222.0" prefWidth="532.0" style="-fx-background-color: #cf5b21" VBox.vgrow="ALWAYS" />
+                <ListView fx:id="reviewsListView" prefHeight="222.0" prefWidth="532.0" VBox.vgrow="ALWAYS" />
                 <TableView fx:id="reviewsTableView" prefHeight="578.0" prefWidth="571.0"> <!--style="-fx-background-color: #f2854e"> -->
                     <columns>
                         <TableColumn fx:id="ratingColumn" style="-fx-background-color: #cf5b21" text="Rating" />
