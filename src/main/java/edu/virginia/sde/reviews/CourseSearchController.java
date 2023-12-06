@@ -223,7 +223,11 @@ public class CourseSearchController {
 
                         // Use the extracted values in the getcourseID method
                         String courseId = databaseManager.getcourseId(mnemonic, courseNumber, courseTitle);
-
+                        System.out.println("courseID"+  courseId);
+                        if( courseId== null){
+                            System.out.println("caught it");
+                            throw new NullPointerException("caught the issue");
+                        }
                         handleLinkedButtonAction(courseId);
                     }
 
@@ -264,7 +268,10 @@ public class CourseSearchController {
             controller.setStage(stage);
 
             Course currentCourse = databaseManager.getCourseById(currentCourseId);
-
+            if( currentCourse== null){
+                System.out.println("caught it");
+                throw new NullPointerException("caught the issue");
+            }
             System.out.println("username is ");
             System.out.println(user.toString()+ user.getUsername());
             controller.initCourseData(currentCourse, user);
