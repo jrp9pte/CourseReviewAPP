@@ -36,6 +36,9 @@ public class CourseSearchController {
     private String courseTitle;
     private int newCourseRating;
 
+    private List<Review> courseReviews;
+
+    private String averageRating;
 
     private Stage stage;
     private DatabaseManager databaseManager = new DatabaseManager();
@@ -71,7 +74,8 @@ public class CourseSearchController {
         }
             ObservableList<String> searchResults = FXCollections.observableArrayList();
             for(Course course : courseList) {
-                String displayString = String.format("%-1s %-10s %-30s %-20s",course.getMnemonic(), course.getCourseNumber(), course.getCourseTitle(),course.getCourseRating());
+                String rating = loadCourseData(course);
+                String displayString = String.format("%-1s %-10s %-30s %-20s",course.getMnemonic(), course.getCourseNumber(), course.getCourseTitle(), rating);
                 searchResults.add(displayString);
                 System.out.println(displayString);
             }
@@ -79,8 +83,31 @@ public class CourseSearchController {
             setCellFactoryForCourseList();
     }
 
+    private String loadCourseData(Course course) {
+        DatabaseManager.initializeHibernate();
+        ObservableList<Review> reviews = FXCollections.observableArrayList();
+        courseReviews = Objects.requireNonNull(DatabaseManager.getAllReviews()).stream()
+                .filter(rev -> rev.getCourse().equals(course))
+                .toList();
 
-    public void handleAddButton() {
+        var avgRating = courseReviews.stream()
+                .mapToInt(Review::getRating)  // Convert Stream<Review> to IntStream
+                .average()                    // Calculates the average
+                .orElse(0.0);
+
+        double roundedDouble = Math.round(avgRating * 100.0) / 100.0;
+
+        if( avgRating== 0.0){
+            averageRating = "Average Rating : None";
+        }
+        else{
+           averageRating = Double.toString(roundedDouble);
+        }
+
+        return averageRating;
+
+    }
+        public void handleAddButton() {
         Dialog<Void> dialog = new Dialog<>();
         dialog.setTitle("Add Course");
         dialog.setHeaderText("Enter Course Information");
@@ -132,7 +159,7 @@ public class CourseSearchController {
 //                        System.out.println("FAILED adding course review");
 //                    }
 
-                    String formattedRow = String.format("%-10s %-10s %-30s %-20s", courseMnemonic.toUpperCase(), courseNumber, courseTitle, 0);
+                    String formattedRow = String.format("%-10s %-10s %-30s", courseMnemonic.toUpperCase(), courseNumber, courseTitle);
                     DatabaseManager.addCourse(courseMnemonic, courseNumber, courseTitle, 0, null);
                     ObservableList<String> searchResults = FXCollections.observableArrayList(formattedRow);
                     CourseSearchList.setItems(searchResults);
@@ -144,6 +171,8 @@ public class CourseSearchController {
                     invalidCourseDialog.setHeaderText("Error: Attempted Course Add\nMake sure the fields follow below:\n\t- Mnemonic (2-4 letters)\n\t- Number (exactly 4 numbers)\n\t- Title (1-49 letters)");
                     invalidCourseDialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
                     invalidCourseDialog.showAndWait();
+                    invalidCourseDialog.close();
+                    handleAddButton();
                 }
             }
             return null;

@@ -8,6 +8,7 @@
     <children>
         <VBox layoutX="50.0" layoutY="44.0" prefHeight="350.0" prefWidth="571.0">
             <children>
+                <Label fx:id="myReviewsguide" text="Select a review to navigate back to that course's review." textFill="WHITE" />
                 <ListView fx:id="reviewsListView" prefHeight="441.0" prefWidth="509.0" style="-fx-border-color: #f2854e">
                     <!-- Custom cell factory can be set in the controller to format list items -->
                 </ListView>
