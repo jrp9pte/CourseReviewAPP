@@ -125,7 +125,7 @@ public class CourseReviewsController {
         String formattedDouble = String.format("%.2f", avgRating);
 
         if( avgRating== 0.0){
-            averageRatingLabel.setText("Average Rating : " + "None");
+            averageRatingLabel.setText("NoRating");
         }
         else{
             averageRatingLabel.setText("Average Rating : " + formattedDouble);
@@ -268,12 +268,12 @@ public class CourseReviewsController {
     public void setStage(Stage stage) {
         this.stage = stage;
     }
-//    public void setUser(User user){
-//        this.user = user;
-//    }
-//    public void setCourse(Course course) {
-//        this.course = course;
-//    }
+    public void setUser(User user){
+        this.user = user;
+    }
+    public void setCourse(Course course) {
+        this.course = course;
+    }
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Warning");
