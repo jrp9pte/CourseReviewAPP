@@ -6,9 +6,9 @@
 
 <AnchorPane prefHeight="505.0" prefWidth="677.0" style="-fx-background-color: #141b61;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.virginia.sde.reviews.MyReviewsController">
     <children>
-        <VBox layoutX="50.0" layoutY="44.0" prefHeight="276.0" prefWidth="571.0">
+        <VBox layoutX="50.0" layoutY="44.0" prefHeight="350.0" prefWidth="571.0">
             <children>
-                <ListView fx:id="reviewsListView" prefHeight="441.0" prefWidth="509.0" style="-fx-background-color: #f2854e">
+                <ListView fx:id="reviewsListView" prefHeight="441.0" prefWidth="509.0" style="-fx-border-color: #f2854e">
                     <!-- Custom cell factory can be set in the controller to format list items -->
                 </ListView>
             </children></VBox>
@@ -20,10 +20,6 @@
                     <font>
                         <Font name="SansSerif Regular" size="10.0" />
                     </font></Button>
-<!--                <Button mnemonicParsing="false" text="Course Reviews" onAction="#handleCourReviewsNavAction">-->
-<!--                    <font>-->
-<!--                        <Font name="SansSerif Regular" size="10.0" />-->
-<!--                    </font></Button>-->
                 <Button mnemonicParsing="false" style="-fx-font-weight: bold" text="My Reviews" textFill="#0055ff">
                     <font>
                         <Font name="SansSerif Regular" size="10.0" />

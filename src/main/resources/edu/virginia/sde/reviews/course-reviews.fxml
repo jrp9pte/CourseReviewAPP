@@ -8,50 +8,49 @@
     <children>
         <VBox layoutX="50.0" layoutY="44.0" prefHeight="276.0" prefWidth="571.0">
             <children>
-                <Label fx:id="courseInfoLabel" text="Course Info" textFill="WHITE"/>
+                <Label fx:id="courseInfoLabel" text="Course Info" textFill="WHITE" />
 <!--                <TextField prefWidth="150.0" />-->
-                <Label fx:id="averageRatingLabel" text="Average Rating" textFill="WHITE"/>
+                <Label fx:id="averageRatingLabel" text="Average Rating" textFill="WHITE" />
 <!--                <TextField prefWidth="150.0" />-->
-                <ListView fx:id="reviewsListView" prefHeight="222.0" prefWidth="532.0" VBox.vgrow="ALWAYS" style="-fx-background-color: #cf5b21"/>
-                <TableView fx:id="reviewsTableView" prefHeight="578.0" prefWidth="571.0" style="-fx-background-color: #f2854e">
+                <ListView fx:id="reviewsListView" prefHeight="222.0" prefWidth="532.0" style="-fx-background-color: #cf5b21" VBox.vgrow="ALWAYS" />
+                <TableView fx:id="reviewsTableView" prefHeight="578.0" prefWidth="571.0"> <!--style="-fx-background-color: #f2854e"> -->
                     <columns>
-                        <TableColumn fx:id="ratingColumn" text="Rating" style="-fx-background-color: #cf5b21"/>
-                        <TableColumn fx:id="commentColumn" text="Comment" style="-fx-background-color: #cf5b21"/>
-                        <TableColumn fx:id="timestampColumn" text="Timestamp" style="-fx-background-color: #cf5b21"/>
+                        <TableColumn fx:id="ratingColumn" style="-fx-background-color: #cf5b21" text="Rating" />
+                        <TableColumn fx:id="commentColumn" style="-fx-background-color: #cf5b21" text="Comment" />
+                        <TableColumn fx:id="timestampColumn" style="-fx-background-color: #cf5b21" text="Timestamp" />
                     </columns>
                 </TableView>
             </children></VBox>
 
         <VBox layoutX="52.0" layoutY="321.0" prefHeight="117.0" prefWidth="571.0">
-            <Label text="Your Review" textFill="WHITE" />
             <VBox prefHeight="43.0" prefWidth="603.0">
-                <Label text="Your Rating" textFill="WHITE"/>
-                <ComboBox fx:id="ratingComboBox" style="-fx-background-color: #f2854e"/>
+                <Label text="Your Rating" textFill="WHITE" />
+                <ComboBox fx:id="ratingComboBox" style="-fx-background-color: #f2854e" />
             </VBox>
-            <VBox prefHeight="66.0" prefWidth="571.0">
-                <Label text="Your Comment" textFill="WHITE"/>
-                <TextArea fx:id="commentTextArea" prefHeight="40.0" prefWidth="491.0" promptText="Enter your comment" style="-fx-background-color: #f2854e; -fx-prompt-text-fill: #707070"/>
+            <VBox prefHeight="66.0" prefWidth="571.0" >
+                <Label text="Your Comment" textFill="WHITE" />
+                <TextArea fx:id="commentTextArea" prefHeight="40.0" prefWidth="491.0" promptText="Enter your comment" style="-fx-background-color: #f2854e; -fx-prompt-text-fill: #707070" />
             </VBox>
         </VBox>
-        <VBox layoutX="526.0" layoutY="438.0" prefHeight="26.0" prefWidth="98.0">
+        <VBox layoutX="526.0" layoutY="428.0" prefHeight="26.0" prefWidth="98.0">
             <Button onAction="#handleDeleteReview" prefHeight="26.0" prefWidth="97.0" text="Delete Review" />
         </VBox>
-        <VBox layoutX="426.0" layoutY="438.0" prefHeight="26.0" prefWidth="98.0">
+        <VBox layoutX="426.0" layoutY="428.0" prefHeight="26.0" prefWidth="98.0">
             <Button onAction="#handleSubmitReview" text="Submit Review" />
         </VBox>
 
 
         <ToolBar layoutX="410.0" layoutY="10.0" prefHeight="30.0" prefWidth="240.0" style="-fx-background-color: #141b61">
             <items>
-                <Button mnemonicParsing="false" text="Course Search" onAction="#handleCourSearchNavAction">
+                <Button mnemonicParsing="false" onAction="#handleCourSearchNavAction" text="Course Search">
                     <font>
                         <Font name="SansSerif Regular" size="10.0" />
                     </font></Button>
-                <Button mnemonicParsing="false" text="My Reviews" onAction="#handleMyReviewsNavAction">
+                <Button mnemonicParsing="false" onAction="#handleMyReviewsNavAction" text="My Reviews">
                     <font>
                         <Font name="SansSerif Regular" size="10.0" />
                     </font></Button>
-                <Button mnemonicParsing="false" text="Logout" onAction="#handleLoginNavAction">
+                <Button mnemonicParsing="false" onAction="#handleLoginNavAction" text="Logout">
                     <font>
                         <Font name="SansSerif Regular" size="10.0" />
                     </font></Button>
