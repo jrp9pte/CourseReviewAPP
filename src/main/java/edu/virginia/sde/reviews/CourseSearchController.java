@@ -297,12 +297,16 @@ public class CourseSearchController {
     @FXML
     protected void handleLoginNavAction(ActionEvent event) {
         try {
-            Parent logoutRoot = FXMLLoader.load(getClass().getResource("initial-login.fxml"));
-            Scene logoutScene = new Scene(logoutRoot);
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("initial-login.fxml"));
+            Scene logoutScene = new Scene(fxmlLoader.load());
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
             stage.setScene(logoutScene);
+
+            LoginScreenController controller = fxmlLoader.getController();
+            controller.setStage(stage);
+            controller.setUser(user);
+
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

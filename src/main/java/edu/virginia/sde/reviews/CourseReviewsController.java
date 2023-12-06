@@ -192,7 +192,7 @@ public class CourseReviewsController {
 
     @FXML
     private void handleDeleteReview() {
-//        TODO: implememt deletion, be sure to send and potential error messages and be sure to only allow deletion if the selcted reveiw is the user's
+//        TODO: implememt deletion, be sure to send and potential error messages and be sure to only allow deletion if the selected reveiw is the user's
         // Logic to delete the user's review from the database
         System.out.println("this was selected to be deleted" + selectedReview.getCourse() + selectedReview.getComment());
     }
@@ -260,14 +260,16 @@ public class CourseReviewsController {
     protected void handleMyReviewsNavAction(ActionEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("my-reviews.fxml"));
-            Scene mReviewsScene = new Scene(fxmlLoader.load());
+            Scene scene = new Scene(fxmlLoader.load());
+            stage.setScene(scene);
+            stage.setTitle("My Reviews");
+            stage.show();
 
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(mReviewsScene);
-
+            // Assuming MyReviewsController has a method to set the main application reference
             MyReviewsController controller = fxmlLoader.getController();
             controller.setStage(stage);
-            controller.setUser(user);
+            System.out.println("user is" + user);
+            controller.initialize(user);
 
             stage.show();
         } catch (IOException e) {
