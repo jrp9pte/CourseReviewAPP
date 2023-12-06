@@ -137,52 +137,52 @@ public class CourseSearchController {
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
         dialog.setResultConverter(dialogButton -> {
-            if (dialogButton == ButtonType.OK) {
-                courseMnemonic = addCourseMnemonic.getText();
-                if (!Objects.equals(addCourseNumber.getText(), "")) {
-                    courseNumber = Integer.parseInt(addCourseNumber.getText());
+            try {
+                if (dialogButton == ButtonType.OK) {
+                    courseMnemonic = addCourseMnemonic.getText();
+                    if (!Objects.equals(addCourseNumber.getText(), "")) {
+                        courseNumber = Integer.parseInt(addCourseNumber.getText());
+                    }
+                    courseTitle = addCourseTitle.getText();
+
+                    if (courseMnemonic.matches("[A-Za-z]{2,4}") && String.valueOf(courseNumber).matches("[0-9]{4}") && courseTitle.matches("[A-Za-z0-9\\s]{1,49}")) {
+                        if (!courseMnemonic.matches("[A-Za-z]{2,4}")) {
+                            System.out.println("FAILED adding mnemonic");
+                        }
+                        if (!String.valueOf(courseNumber).matches("[0-9]{4}")) {
+                            System.out.println("FAILED adding course number");
+                        }
+                        if (!courseTitle.matches("[A-Za-z0-9\\s]{1,49}")) {
+                            System.out.println("FAILED adding course title");
+                        }
+
+                        String formattedRow = String.format("%-10s %-10s %-30s", courseMnemonic.toUpperCase(), courseNumber, courseTitle);
+                        DatabaseManager.addCourse(courseMnemonic, courseNumber, courseTitle, 0, null);
+                        ObservableList<String> searchResults = FXCollections.observableArrayList(formattedRow);
+                        CourseSearchList.setItems(searchResults);
+                        setCellFactoryForCourseList();
+
+                    } else {
+                        Dialog<Void> invalidCourseDialog = new Dialog<>();
+                        invalidCourseDialog.setTitle("Invalid Course Credentials");
+                        invalidCourseDialog.setHeaderText("Error: Attempted Course Add\nMake sure the fields follow below:\n\t- Mnemonic (2-4 letters)\n\t- Number (exactly 4 numbers)\n\t- Title (1-49 letters)");
+                        invalidCourseDialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+                        invalidCourseDialog.showAndWait();
+                        invalidCourseDialog.close();
+                        handleAddButton();
+                    }
                 }
-                courseTitle = addCourseTitle.getText();
-//                if (!Objects.equals(addNewCourseRating.getText(), "")) {
-//                    newCourseRating = Integer.parseInt(addNewCourseRating.getText());
-//                }
-
-//                if(!Objects.equals(addCourseMnemonic.getText(), "") && !Objects.equals(addCourseNumber.getText(), "") && !Objects.equals(addCourseTitle.getText(), "")) {
-                if (courseMnemonic.matches("[A-Za-z]{2,4}") && String.valueOf(courseNumber).matches("[0-9]{4}") && courseTitle.matches("[A-Za-z0-9\\s]{1,49}")) {
-                    if (!courseMnemonic.matches("[A-Za-z]{2,4}")) {
-                        System.out.println("FAILED adding mnemonic");
-                    }
-                    if (!String.valueOf(courseNumber).matches("[0-9]{4}")) {
-                        System.out.println("FAILED adding course number");
-                    }
-                    if (!courseTitle.matches("[A-Za-z0-9\\s]{1,49}")) {
-                        System.out.println("FAILED adding course title");
-                    }
-//                    if (!String.valueOf(newCourseRating).matches("[0-5]{1}")) {
-//                        System.out.println("FAILED adding course review");
-//                    }
-
-                    String formattedRow = String.format("%-10s %-10s %-30s", courseMnemonic.toUpperCase(), courseNumber, courseTitle);
-                    DatabaseManager.addCourse(courseMnemonic, courseNumber, courseTitle, 0, null);
-                    ObservableList<String> searchResults = FXCollections.observableArrayList(formattedRow);
-                    CourseSearchList.setItems(searchResults);
-                    setCellFactoryForCourseList();
-
-                } else {
-                    Dialog<Void> invalidCourseDialog = new Dialog<>();
-                    invalidCourseDialog.setTitle("Invalid Course Credentials");
-                    invalidCourseDialog.setHeaderText("Error: Attempted Course Add\nMake sure the fields follow below:\n\t- Mnemonic (2-4 letters)\n\t- Number (exactly 4 numbers)\n\t- Title (1-49 letters)");
-                    invalidCourseDialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-                    invalidCourseDialog.showAndWait();
-                    invalidCourseDialog.close();
-                    handleAddButton();
-                }
+            } catch (NumberFormatException e) {
+                // Handle the NumberFormatException here
+                System.out.println("Error converting string to number: " + e.getMessage());
+            } catch (Exception e) {
+                // Handle other exceptions here
+                System.out.println("An unexpected error occurred: " + e.getMessage());
             }
             return null;
         });
 
         dialog.showAndWait();
-
     }
 
     private void setCellFactoryForCourseList() {
