@@ -208,7 +208,8 @@ public class CourseReviewsController {
 
     private void submitNewReview() {
         // Check for valid input
-        if (ratingComboBox.getValue() == null || commentTextArea.getText().trim().isEmpty()) {
+//        System.out.println("values are: " + ratingComboBox.getValue() + commentTextArea.getText().trim().isEmpty());
+        if (ratingComboBox.getValue() == null ) {
             showAlert("Please fill in all fields to submit a review.");
             return;
         }
