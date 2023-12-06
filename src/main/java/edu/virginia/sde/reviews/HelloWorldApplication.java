@@ -37,7 +37,7 @@ public class HelloWorldApplication extends Application {
 //    }
 
 //    public void switchToMyReviewsScene() throws IOException {
-//        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MyReviews.fxml"));
+//        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("my-reviews.fxml"));
 //        Scene scene = new Scene(fxmlLoader.load());
 //        stage.setScene(scene);
 //        stage.setTitle("My Reviews");
@@ -83,7 +83,7 @@ public class HelloWorldApplication extends Application {
 ////        Scene scene = new Scene(fxmlLoader.load());
 ////        stage.setTitle("Hello World");
 ////
-////        FXMLLoader fxmlLoader1 = new FXMLLoader(getClass().getResource("MyReviews.fxml"));
+////        FXMLLoader fxmlLoader1 = new FXMLLoader(getClass().getResource("my-reviews.fxml"));
 ////        Scene scene1 = new Scene(fxmlLoader1.load());
 ////        stage.setScene(scene1);
 ////        stage.show();
@@ -108,7 +108,7 @@ public class HelloWorldApplication extends Application {
 //    }
 //
 //    public void switchToMyReviewsScene() throws IOException {
-//        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MyReviews.fxml"));
+//        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("my-reviews.fxml"));
 //        Scene scene = new Scene(fxmlLoader.load());
 //        stage.setScene(scene);
 //        stage.setTitle("My Reviews");

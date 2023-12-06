@@ -330,15 +330,17 @@ public class CourseReviewsController {
     protected void handleMyReviewsNavAction(ActionEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("my-reviews.fxml"));
-            Scene mReviewsScene = new Scene(fxmlLoader.load());
+            Scene scene = new Scene(fxmlLoader.load());
+            stage.setScene(scene);
+            stage.setTitle("My Reviews");
+            stage.show();
 
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(mReviewsScene);
-
+            // Assuming MyReviewsController has a method to set the main application reference
             MyReviewsController controller = fxmlLoader.getController();
             controller.setStage(stage);
+
             controller.initialize(user);
-            stage.setTitle("My Reviews");
+
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
