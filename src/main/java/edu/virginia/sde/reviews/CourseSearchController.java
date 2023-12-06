@@ -218,12 +218,9 @@ public class CourseSearchController {
     }
 
     private void handleLinkedButtonAction(String currentCourseId) {
-        // Implement the linked button action using the course information
         // when button is clicked then go to the course review scene
         System.out.println("Linked button clicked for: " + currentCourseId);
 
-//        Sonthing like this
-//        Pass stage to this scene (use setStage function below) when called to use it here for changing scene
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("course-reviews.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
@@ -286,6 +283,7 @@ public class CourseSearchController {
             controller.setStage(stage);
             System.out.println("user is" + user);
             controller.initialize(user);
+
 
             stage.show();
         } catch (IOException e) {

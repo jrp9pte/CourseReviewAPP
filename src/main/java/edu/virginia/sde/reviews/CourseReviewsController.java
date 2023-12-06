@@ -54,12 +54,12 @@ public class CourseReviewsController {
 
     // Call this method to initialize the scene with a specific course
     public void initCourseData(Course course, User user) {
+        DatabaseManager.initializeHibernate();
         ratingComboBox.setItems(FXCollections.observableArrayList(1, 2, 3, 4, 5));
         loadReviews(course);
         loadCourseData(course);
         checkAndSetUserReviewStatus(course);
         this.course = course;
-        database.initializeHibernate();
         this.user = user;
         System.out.println(user.toString());
         setupReviewsTable();
@@ -67,6 +67,9 @@ public class CourseReviewsController {
 
     }
     private void setupReviewsTable() {
+
+//        TODO: Fix timestamp initalliation in table, also just fyi the list view is the old way i used to show data table is new way, will have to delete the listview after table works complety, kept it for now as the listview had less bugs and kinda shows what the table needs to
+        // Assuming Review class has methods: getRating, getTimestamp, and getComment
         // Set up the Rating column
         ratingColumn.setCellValueFactory(new PropertyValueFactory<>("rating"));
 
@@ -257,12 +260,12 @@ public class CourseReviewsController {
     public void setStage(Stage stage) {
         this.stage = stage;
     }
-    public void setUser(User user){
-        this.user = user;
-    }
-    public void setCourse(Course course) {
-        this.course = course;
-    }
+//    public void setUser(User user){
+//        this.user = user;
+//    }
+//    public void setCourse(Course course) {
+//        this.course = course;
+//    }
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Warning");
@@ -333,7 +336,7 @@ public class CourseReviewsController {
 
             MyReviewsController controller = fxmlLoader.getController();
             controller.setStage(stage);
-            controller.setUser(user);
+            controller.initialize(user);
 
             stage.show();
         } catch (IOException e) {
