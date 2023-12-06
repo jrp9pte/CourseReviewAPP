@@ -44,6 +44,8 @@ public class CourseSearchController {
     private DatabaseManager databaseManager = new DatabaseManager();
     private User user;
 
+    private Course course;
+
     public void handleSearchButton() {
 
         String mnemonicSearch = CourseMnemonic.getText();
@@ -101,7 +103,7 @@ public class CourseSearchController {
         String roundedDouble = String.format("%.2f", avgRating);
 
         if( avgRating== 0.0){
-            averageRating = "Average Rating : None";
+            averageRating = "NoRating";
         }
         else{
            averageRating = roundedDouble;
@@ -156,7 +158,7 @@ public class CourseSearchController {
                             System.out.println("FAILED adding course title");
                         }
 
-                        String formattedRow = String.format("%-10s %-10s %-30s", courseMnemonic.toUpperCase(), courseNumber, courseTitle);
+                        String formattedRow = String.format("%-10s %-10s %-30s %-20s", courseMnemonic.toUpperCase(), courseNumber, courseTitle, "NoRating");
                         DatabaseManager.addCourse(courseMnemonic, courseNumber, courseTitle, 0, null);
                         ObservableList<String> searchResults = FXCollections.observableArrayList(formattedRow);
                         CourseSearchList.setItems(searchResults);
@@ -203,6 +205,7 @@ public class CourseSearchController {
                 courseReviewButton.setOnAction(event -> {
                     // Call the linked action using the course information
                     String courseInfo = getItem();
+                    System.out.println("course info: " + courseInfo);
 
                     // Split the course information into tokens
                     String[] tokens = courseInfo.split("\\s+");
@@ -211,7 +214,9 @@ public class CourseSearchController {
                     if (tokens.length >= 3) {
                         // Extract values from tokens
                         String mnemonic = tokens[0];
+                        System.out.println(mnemonic);
                         int courseNumber = Integer.parseInt(tokens[1]);
+                        System.out.println(courseNumber);
 
                         // Combine remaining tokens as CourseTitle
                         StringBuilder courseTitleBuilder = new StringBuilder();
@@ -220,9 +225,11 @@ public class CourseSearchController {
                         }
                         // Remove trailing space
                         String courseTitle = courseTitleBuilder.toString().trim();
+                        System.out.println(courseTitle);
 
                         // Use the extracted values in the getcourseID method
                         String courseId = databaseManager.getcourseId(mnemonic, courseNumber, courseTitle);
+                        System.out.println(courseId);
 
                         handleLinkedButtonAction(courseId);
                     }
@@ -264,11 +271,11 @@ public class CourseSearchController {
             controller.setStage(stage);
 
             Course currentCourse = databaseManager.getCourseById(currentCourseId);
+            controller.setCourse(currentCourse);
 
             System.out.println("username is ");
             System.out.println(user.toString()+ user.getUsername());
             controller.initCourseData(currentCourse, user);
-            controller.setStage(stage);
             stage.show();
 
         }  catch (IOException e) {

@@ -168,7 +168,6 @@ public class DatabaseManager {
         try (Session session = sessionFactory.openSession()) {
             List<Course> courses = session.createQuery("FROM Course", Course.class).list();
             return courses;
-
         } catch (Exception e) {
             e.printStackTrace();
         }
