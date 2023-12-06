@@ -54,33 +54,34 @@ public class CourseReviewsController {
 
     // Call this method to initialize the scene with a specific course
     public void initCourseData(Course course, User user) {
+        DatabaseManager.initializeHibernate();
         ratingComboBox.setItems(FXCollections.observableArrayList(1, 2, 3, 4, 5));
         loadReviews(course);
         loadCourseData(course);
-        checkAndSetUserReviewStatus(course);
-        setCourse(course);
-        database.initializeHibernate();
+        this.course = course;
         this.user = user;
+//        System.out.println(user.toString());
         setupReviewsTable();
         reviewsTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        checkAndSetUserReviewStatus(course);
 
     }
     private void setupReviewsTable() {
+
 //        TODO: Fix timestamp initalliation in table, also just fyi the list view is the old way i used to show data table is new way, will have to delete the listview after table works complety, kept it for now as the listview had less bugs and kinda shows what the table needs to
         // Assuming Review class has methods: getRating, getTimestamp, and getComment
-
         // Set up the Rating column
-        ratingColumn.setCellValueFactory(review -> new SimpleIntegerProperty(review.getValue().getRating()).asObject());
+        ratingColumn.setCellValueFactory(new PropertyValueFactory<>("rating"));
 
-//
-//        // Set up the Timestamp column
-//        timestampColumn.setCellValueFactory(cellData ->
-//                new SimpleStringProperty(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(cellData.getValue().getTimestamp()))
-//        );
-//
-//        // Set up the Comment column
-//        commentColumn.setCellValueFactory(review -> new PropertyValueFactory<>(review.getComment()));
+        // Set up the Timestamp column
+        timestampColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(
+                        new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(cellData.getValue().getTimestamp()))
+        );
+
+        // Set up the Comment column
         commentColumn.setCellValueFactory(new PropertyValueFactory<>("comment"));
+
         setCenteredCellFactory(ratingColumn);
         setCenteredCellFactory(timestampColumn);
         setCenteredCellFactory(commentColumn);
@@ -160,46 +161,86 @@ public class CourseReviewsController {
     }
 
     private void checkAndSetUserReviewStatus(Course course) {
-//        TODO: Old approach was to diable the form if course is already reviewed but it makes more sense to just use that same for to poteiallty edit a review as well.
-//        Old:
-                    // Check if the user has already reviewed the course
-                    // Enable or disable the review form accordingly
-//        New: can either delete this function of use as helper function to determine if user can sumbit a new review or not.
+        boolean hasReviewed = DatabaseManager.hasUserReviewedCourse(user.getId(), course.getCourseId());
+        if (hasReviewed) {
+            // The user has already reviewed this course
+            // Find the user's review and set it to the selectedReview variable
+            selectedReview = DatabaseManager.getReviewsByUser(user.getId()).stream()
+                    .filter(review -> review.getCourse().equals(course))
+                    .findFirst()
+                    .orElse(null);
+            if (selectedReview != null) {
+                // Populate the form with the user's review details
+                ratingComboBox.setValue(selectedReview.getRating());
+                commentTextArea.setText(selectedReview.getComment());
+            }
+            // Optionally, disable the submit button if you want to prevent users from submitting multiple reviews
+            // submitButton.setDisable(true);
+        } else {
+            // The user has not reviewed this course, enable the form for new submission
+            ratingComboBox.setValue(null);
+            commentTextArea.clear();
+            // submitButton.setDisable(false);
+        }
     }
+
 
     @FXML
     private void handleSubmitReview() {
-        // TODO: Implement logic for submitting/editing a review. The user clicks a review to edit it, The comment and rating box should propagte with the reviews details, Refresh Page after
-        // Logic to submit/edit review in the database
-//        if( user has already reviewed ){
-//          deleted selected review
-//        }
-        submitNewReview(); // use current values
-    }
 
-    private void submitNewReview(){
-// TODO: Ensure alerts are shown if user tries to sumbit an invalid review or another review if there already sent one, refresh page after.
-        // Logic to submit/edit review in the database
-//        let database chooose the id
-        if (ratingComboBox.getValue() == null) {
+        if (selectedReview != null && ratingComboBox.getValue() != null) {
+            // Edit existing review
+            DatabaseManager.updateReview(selectedReview.getId(), ratingComboBox.getValue(), commentTextArea.getText());
+            showAlert("Review updated successfully!");
+        } else if (selectedReview == null && ratingComboBox.getValue() != null) {
+            // Submit a new review
+            submitNewReview();
+        } else {
             showAlert("Please select a rating.");
             return;
         }
-//        Need to check if user has reviewed already as well
-//        if (user has reviewed already) {
-//            showAlert("You have reviewed this course already!");
-//            return;
-//        }
-//        Review newReview = new Review(0, ratingComboBox.getValue() , new Timestamp(System.currentTimeMillis()), commentTextArea.getText(), user, course  );
-        DatabaseManager.addReview(user.getUsername(), course.getCourseId(),ratingComboBox.getValue(),commentTextArea.getText()  );
+        // After submission, refresh the reviews list or page as needed
+        loadReviews(course);
+        refreshPage();
     }
 
+
+    private void submitNewReview() {
+        // Check for valid input
+        if (ratingComboBox.getValue() == null || commentTextArea.getText().trim().isEmpty()) {
+            showAlert("Please fill in all fields to submit a review.");
+            return;
+        }
+        // Check if the user has already submitted a review
+        if (DatabaseManager.hasUserReviewedCourse(user.getUsername(), course.getCourseId())) {
+            showAlert("You have already reviewed this course!");
+            return;
+        }
+        // Add the review to the database
+        DatabaseManager.addReview(user.getUsername(), course.getCourseId(), ratingComboBox.getValue(), commentTextArea.getText());
+        showAlert("Review submitted successfully!");
+    }
     @FXML
     private void handleDeleteReview() {
-//        TODO: implememt deletion, be sure to send and potential error messages and be sure to only allow deletion if the selected reveiw is the user's
-        // Logic to delete the user's review from the database
-        System.out.println("this was selected to be deleted" + selectedReview.getCourse() + selectedReview.getComment());
+        // Check if a review is actually selected
+        if (selectedReview == null) {
+            showAlert("No review selected to delete.");
+            return;
+        }
+        // Check if the selected review belongs to the current user
+        System.out.println(selectedReview.getUser().toString());
+        System.out.println(user.getId());
+        if (!selectedReview.getUser().getId().equals(user.getId())) {
+            showAlert("You can only delete your own reviews.");
+            return;
+        }
+        // Delete the review from the database
+        DatabaseManager.deleteReview(selectedReview.getId());
+        showAlert("Review deleted successfully.");
+        // Refresh the reviews list or page as needed
+        loadReviews(course);
     }
+
 
     @FXML
     private void handleBackButton() throws IOException {
@@ -225,12 +266,12 @@ public class CourseReviewsController {
     public void setStage(Stage stage) {
         this.stage = stage;
     }
-    public void setUser(User user){
-        this.user = user;
-    }
-    public void setCourse(Course course) {
-        this.course = course;
-    }
+//    public void setUser(User user){
+//        this.user = user;
+//    }
+//    public void setCourse(Course course) {
+//        this.course = course;
+//    }
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Warning");
@@ -253,7 +294,38 @@ public class CourseReviewsController {
             CourseSearchController controller = fxmlLoader.getController();
             controller.setStage(stage);
             controller.setUser(user);
+            stage.setTitle("Course Search");
 
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private void refreshPage() {
+        try {
+            // Load the same FXML file
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("course-reviews.fxml"));
+            Parent root = fxmlLoader.load();
+
+            // Create a new scene with the loaded FXML content
+            Scene scene = new Scene(root);
+
+            // Set the new scene on the stage
+            stage.setScene(scene);
+            stage.setTitle("Course Reviews"); // Set your window title here
+
+            // Pass the necessary data to the controller if needed
+            CourseReviewsController controller = fxmlLoader.getController();
+            controller.setStage(stage);
+//            controller.setUser(user);
+//            controller.setCourse(course);
+            controller.initCourseData(course, user);
+
+            // Reset form fields
+            controller.ratingComboBox.getSelectionModel().clearSelection(); // Clear selected rating
+            controller.commentTextArea.clear(); // Clear comment text
+
+            // Show the updated scene
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -272,7 +344,7 @@ public class CourseReviewsController {
             // Assuming MyReviewsController has a method to set the main application reference
             MyReviewsController controller = fxmlLoader.getController();
             controller.setStage(stage);
-            System.out.println("user is" + user);
+
             controller.initialize(user);
 
             stage.show();
@@ -293,7 +365,7 @@ public class CourseReviewsController {
             LoginScreenController controller = fxmlLoader.getController();
             controller.setStage(stage);
             controller.setUser(user);
-
+            stage.setTitle("Login");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
