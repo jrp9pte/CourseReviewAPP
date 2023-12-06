@@ -28,9 +28,9 @@ List the primary contributions of each author. It is recommended to update this 
 
 ### Krish Sahoo
 
-* Author 2 contributions
-* as a bulleted list
-* each line starts with an asterisk and a space
+* DatabaseManager
+* Hibernate Config
+* Entity Classes
 
 ### Jay Patel
 
