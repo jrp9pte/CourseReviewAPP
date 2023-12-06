@@ -184,7 +184,7 @@ public class CourseReviewsController {
     @FXML
     private void handleSubmitReview() {
 
-        if (selectedReview != null && ratingComboBox.getValue() != null && !commentTextArea.getText().trim().isEmpty()) {
+        if (selectedReview != null && ratingComboBox.getValue() != null) {
             // Edit existing review
             DatabaseManager.updateReview(selectedReview.getId(), ratingComboBox.getValue(), commentTextArea.getText());
             showAlert("Review updated successfully!");
@@ -192,7 +192,7 @@ public class CourseReviewsController {
             // Submit a new review
             submitNewReview();
         } else {
-            showAlert("Please select a rating and write a comment.");
+            showAlert("Please select a rating.");
             return;
         }
         // After submission, refresh the reviews list or page as needed
@@ -224,7 +224,9 @@ public class CourseReviewsController {
             return;
         }
         // Check if the selected review belongs to the current user
-        if (!selectedReview.getUser().equals(user)) {
+        System.out.println(selectedReview.getUser().toString());
+        System.out.println(user.getId());
+        if (!selectedReview.getUser().getId().equals(user.getId())) {
             showAlert("You can only delete your own reviews.");
             return;
         }
