@@ -31,7 +31,7 @@ public class CourseReviewsApplication extends Application {
     }
 
     public void switchToMyReviewsScene(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MyReviews.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("my-reviews.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
         stage.setTitle("My Reviews");
