@@ -19,6 +19,7 @@ List the primary contributions of each author. It is recommended to update this 
 
 * Login Screen
 * Functional Navigation Headers + logout/exits
+* FXML CSS
 
 ### Krish Sahoo
 
