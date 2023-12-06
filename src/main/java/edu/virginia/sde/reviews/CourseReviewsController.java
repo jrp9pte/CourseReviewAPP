@@ -57,14 +57,14 @@ public class CourseReviewsController {
         ratingComboBox.setItems(FXCollections.observableArrayList(1, 2, 3, 4, 5));
         loadReviews(course);
         loadCourseData(course);
-        checkAndSetUserReviewStatus(course);
         this.course = course;
         database.initializeHibernate();
         this.user = user;
+        checkAndSetUserReviewStatus(course);
         System.out.println(user.toString());
         setupReviewsTable();
         reviewsTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
+        checkAndSetUserReviewStatus(course);
     }
     private void setupReviewsTable() {
         // Set up the Rating column
@@ -212,6 +212,7 @@ public class CourseReviewsController {
         // Add the review to the database
         DatabaseManager.addReview(user.getUsername(), course.getCourseId(), ratingComboBox.getValue(), commentTextArea.getText());
         showAlert("Review submitted successfully!");
+        refreshPage();
     }
     @FXML
     private void handleDeleteReview() {
@@ -221,7 +222,7 @@ public class CourseReviewsController {
             return;
         }
         // Check if the selected review belongs to the current user
-        if (!selectedReview.getUser().equals(user)) {
+        if (!selectedReview.getUser().getId().equals(user.getId())) {
             showAlert("You can only delete your own reviews.");
             return;
         }
