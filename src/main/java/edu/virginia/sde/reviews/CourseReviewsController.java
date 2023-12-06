@@ -118,11 +118,15 @@ public class CourseReviewsController {
                 .mapToInt(Review::getRating)  // Convert Stream<Review> to IntStream
                 .average()                    // Calculates the average
                 .orElse(0.0);
+
+
+        double roundedDouble = Math.round(avgRating * 100.0) / 100.0;
+
         if( avgRating== 0.0){
             averageRatingLabel.setText("Average Rating : " + "None");
         }
         else{
-            averageRatingLabel.setText("Average Rating : " + avgRating);
+            averageRatingLabel.setText("Average Rating : " + roundedDouble);
         }
 
     }
