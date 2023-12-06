@@ -35,9 +35,9 @@ public class MyReviewsController {
         loadReviews();
         setupReviewClickListener();
     }
-    public void setUser(User user){
-        this.user = user;
-    }
+//    public void setUser(User user){
+//        this.user = user;
+//    }
 
     // Method to load reviews into the ListView
     private void loadReviews() {
@@ -140,6 +140,7 @@ public class MyReviewsController {
     @FXML
     protected void handleCourSearchNavAction(ActionEvent event) {
         try {
+
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("course-search.fxml"));
             Scene cSearchScene = new Scene(fxmlLoader.load());
 
@@ -149,6 +150,9 @@ public class MyReviewsController {
             CourseSearchController controller = fxmlLoader.getController();
             controller.setStage(stage);
             controller.setUser(user);
+
+            handleBackButton();
+
 
             stage.show();
         } catch (IOException e) {
@@ -168,6 +172,9 @@ public class MyReviewsController {
             LoginScreenController controller = fxmlLoader.getController();
             controller.setStage(stage);
             controller.setUser(user);
+
+
+            stage.setTitle("Login");
 
             stage.show();
         } catch (IOException e) {
