@@ -121,13 +121,14 @@ public class CourseReviewsController {
                 .orElse(0.0);
 
 
-        double roundedDouble = Math.round(avgRating * 100.0) / 100.0;
+
+        String formattedDouble = String.format("%.2f", avgRating);
 
         if( avgRating== 0.0){
             averageRatingLabel.setText("Average Rating : " + "None");
         }
         else{
-            averageRatingLabel.setText("Average Rating : " + roundedDouble);
+            averageRatingLabel.setText("Average Rating : " + formattedDouble);
         }
 
     }
