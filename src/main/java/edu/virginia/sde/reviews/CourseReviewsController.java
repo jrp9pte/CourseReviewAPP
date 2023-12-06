@@ -58,12 +58,12 @@ public class CourseReviewsController {
         ratingComboBox.setItems(FXCollections.observableArrayList(1, 2, 3, 4, 5));
         loadReviews(course);
         loadCourseData(course);
-        checkAndSetUserReviewStatus(course);
         this.course = course;
         this.user = user;
-        System.out.println(user.toString());
+//        System.out.println(user.toString());
         setupReviewsTable();
         reviewsTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        checkAndSetUserReviewStatus(course);
 
     }
     private void setupReviewsTable() {
@@ -288,6 +288,7 @@ public class CourseReviewsController {
             CourseSearchController controller = fxmlLoader.getController();
             controller.setStage(stage);
             controller.setUser(user);
+            stage.setTitle("Course Search");
 
             stage.show();
         } catch (IOException e) {
@@ -337,7 +338,7 @@ public class CourseReviewsController {
             MyReviewsController controller = fxmlLoader.getController();
             controller.setStage(stage);
             controller.initialize(user);
-
+            stage.setTitle("My Reviews");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -356,7 +357,7 @@ public class CourseReviewsController {
             LoginScreenController controller = fxmlLoader.getController();
             controller.setStage(stage);
             controller.setUser(user);
-
+            stage.setTitle("Login");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

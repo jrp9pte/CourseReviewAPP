@@ -233,7 +233,8 @@ public class CourseSearchController {
 
             Course currentCourse = databaseManager.getCourseById(currentCourseId);
 
-            System.out.println("username");
+            System.out.println("username is ");
+            System.out.println(user.toString()+ user.getUsername());
             controller.initCourseData(currentCourse, user);
             controller.setStage(stage);
             stage.show();
