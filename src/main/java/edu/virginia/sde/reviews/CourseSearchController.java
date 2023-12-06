@@ -51,7 +51,10 @@ public class CourseSearchController {
         String titleSearch = CourseTitle.getText();
 
         List<Course> courseList = new ArrayList<>();
-        if (!Objects.equals(mnemonicSearch, "") && !Objects.equals(numberSearch, "") && !Objects.equals(titleSearch, "")) {
+        if (Objects.equals(mnemonicSearch, "") && Objects.equals(numberSearch, "") && Objects.equals(titleSearch, "")) {
+            courseList = DatabaseManager.getAllCourses();
+        }
+        else if (!Objects.equals(mnemonicSearch, "") && !Objects.equals(numberSearch, "") && !Objects.equals(titleSearch, "")) {
               courseList = DatabaseManager.getCourseByMnemonicAndNumberAndTitleContains(mnemonicSearch, Integer.parseInt(numberSearch), titleSearch);
 
         } else if (!Objects.equals(mnemonicSearch, "") && !Objects.equals(numberSearch, "")) {
