@@ -98,13 +98,13 @@ public class CourseSearchController {
                 .average()                    // Calculates the average
                 .orElse(0.0);
 
-        double roundedDouble = Math.round(avgRating * 100.0) / 100.0;
+        String roundedDouble = String.format("%.2f", avgRating);
 
         if( avgRating== 0.0){
             averageRating = "Average Rating : None";
         }
         else{
-           averageRating = Double.toString(roundedDouble);
+           averageRating = roundedDouble;
         }
 
         return averageRating;
