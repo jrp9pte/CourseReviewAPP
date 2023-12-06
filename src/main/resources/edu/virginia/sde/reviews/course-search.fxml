@@ -4,18 +4,18 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="505.0" prefWidth="677.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.virginia.sde.reviews.CourseSearchController">
+<AnchorPane prefHeight="505.0" prefWidth="677.0" style="-fx-background-color: #141b61;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.virginia.sde.reviews.CourseSearchController">
    <children>
       <VBox layoutX="50.0" layoutY="66.0" prefHeight="408.0" prefWidth="571.0">
          <children>
-               <Label text="Search for Course Mnemonic" />
-               <TextField fx:id="CourseMnemonic" prefWidth="150.0" promptText="Course (ex: CS)" />
-               <Label text="Search for Course Number" />
-               <TextField fx:id="CourseNumber" prefWidth="150.0" promptText="Course (ex: 4201)" />
-               <Label text="Search for Course Title" />
-               <TextField fx:id="CourseTitle" prefWidth="150.0" promptText="Course (ex: Intro to Computer Science)" />
+               <Label text="Search for Course Mnemonic" textFill="WHITE" />
+               <TextField fx:id="CourseMnemonic" prefWidth="150.0" promptText="Course (ex: CS)" style="-fx-background-color: #f2854e; -fx-prompt-text-fill: #707070"/>
+               <Label text="Search for Course Number" textFill="WHITE" />
+               <TextField fx:id="CourseNumber" prefWidth="150.0" promptText="Course (ex: 4201)" style="-fx-background-color: #f2854e; -fx-prompt-text-fill: #707070"/>
+               <Label text="Search for Course Title" textFill="WHITE" />
+               <TextField fx:id="CourseTitle" prefWidth="150.0" promptText="Course (ex: Intro to Computer Science)" style="-fx-background-color: #f2854e; -fx-prompt-text-fill: #707070"/>
                <Button mnemonicParsing="false" onAction="#handleSearchButton" text="Search" />
-                <ListView fx:id="CourseSearchList" prefHeight="222.0" prefWidth="532.0" VBox.vgrow="ALWAYS" />
+                <ListView fx:id="CourseSearchList" prefHeight="222.0" prefWidth="532.0" VBox.vgrow="ALWAYS" style="-fx-border-color: #f2854e"/>
              </children></VBox>
        <VBox layoutX="536.0" layoutY="48.0" prefHeight="26.0" prefWidth="87.0">
            <children>
@@ -23,21 +23,17 @@
            </children>
        </VBox>
 
-      <ToolBar layoutX="426.0" layoutY="7.0" prefHeight="35.0" prefWidth="230.0">
+      <ToolBar layoutX="410.0" layoutY="10.0" prefHeight="30.0" prefWidth="240.0" style="-fx-background-color: #141b61">
         <items>
           <Button mnemonicParsing="false" style="-fx-font-weight: bold" text="Course Search" textFill="#0055ff">
                <font>
                   <Font name="SansSerif Regular" size="10.0" />
                </font></Button>
-<!--            <Button mnemonicParsing="false" text="Course Reviews" onAction="#handleCourReviewsNavAction">-->
-<!--               <font>-->
-<!--                  <Font name="SansSerif Regular" size="10.0" />-->
-<!--               </font></Button>-->
-            <Button mnemonicParsing="false" text="My Reviews" onAction="#handleMyReviewsNavAction">
+            <Button mnemonicParsing="false" onAction="#handleMyReviewsNavAction" text="My Reviews">
                <font>
                   <Font name="SansSerif Regular" size="10.0" />
                </font></Button>
-            <Button mnemonicParsing="false" text="Logout" onAction="#handleLoginNavAction">
+            <Button mnemonicParsing="false" onAction="#handleLoginNavAction" text="Logout">
                <font>
                   <Font name="SansSerif Regular" size="10.0" />
                </font></Button>

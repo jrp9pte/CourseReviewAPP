@@ -89,12 +89,16 @@ public class LoginScreenController {
     @FXML
     protected void handleLoginNavAction(ActionEvent event) {
         try {
-            Parent mainPageRoot = FXMLLoader.load(getClass().getResource("initial-login.fxml"));
-            Scene mainPageScene = new Scene(mainPageRoot);
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("initial-login.fxml"));
+            Scene logoutScene = new Scene(fxmlLoader.load());
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(logoutScene);
 
-            stage.setScene(mainPageScene);
+            LoginScreenController controller = fxmlLoader.getController();
+            controller.setStage(stage);
+            controller.setUser(user);
+
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

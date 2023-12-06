@@ -54,19 +54,22 @@ public class CourseReviewsController {
 
     // Call this method to initialize the scene with a specific course
     public void initCourseData(Course course, User user) {
+        DatabaseManager.initializeHibernate();
         ratingComboBox.setItems(FXCollections.observableArrayList(1, 2, 3, 4, 5));
         loadReviews(course);
         loadCourseData(course);
         this.course = course;
-        database.initializeHibernate();
         this.user = user;
-        checkAndSetUserReviewStatus(course);
-        System.out.println(user.toString());
+//        System.out.println(user.toString());
         setupReviewsTable();
         reviewsTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         checkAndSetUserReviewStatus(course);
+
     }
     private void setupReviewsTable() {
+
+//        TODO: Fix timestamp initalliation in table, also just fyi the list view is the old way i used to show data table is new way, will have to delete the listview after table works complety, kept it for now as the listview had less bugs and kinda shows what the table needs to
+        // Assuming Review class has methods: getRating, getTimestamp, and getComment
         // Set up the Rating column
         ratingColumn.setCellValueFactory(new PropertyValueFactory<>("rating"));
 
@@ -212,7 +215,6 @@ public class CourseReviewsController {
         // Add the review to the database
         DatabaseManager.addReview(user.getUsername(), course.getCourseId(), ratingComboBox.getValue(), commentTextArea.getText());
         showAlert("Review submitted successfully!");
-        refreshPage();
     }
     @FXML
     private void handleDeleteReview() {
@@ -222,7 +224,7 @@ public class CourseReviewsController {
             return;
         }
         // Check if the selected review belongs to the current user
-        if (!selectedReview.getUser().getId().equals(user.getId())) {
+        if (!selectedReview.getUser().equals(user)) {
             showAlert("You can only delete your own reviews.");
             return;
         }
@@ -258,12 +260,12 @@ public class CourseReviewsController {
     public void setStage(Stage stage) {
         this.stage = stage;
     }
-    public void setUser(User user){
-        this.user = user;
-    }
-    public void setCourse(Course course) {
-        this.course = course;
-    }
+//    public void setUser(User user){
+//        this.user = user;
+//    }
+//    public void setCourse(Course course) {
+//        this.course = course;
+//    }
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Warning");
@@ -286,6 +288,7 @@ public class CourseReviewsController {
             CourseSearchController controller = fxmlLoader.getController();
             controller.setStage(stage);
             controller.setUser(user);
+            stage.setTitle("Course Search");
 
             stage.show();
         } catch (IOException e) {
@@ -327,14 +330,16 @@ public class CourseReviewsController {
     protected void handleMyReviewsNavAction(ActionEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("my-reviews.fxml"));
-            Scene mReviewsScene = new Scene(fxmlLoader.load());
+            Scene scene = new Scene(fxmlLoader.load());
+            stage.setScene(scene);
+            stage.setTitle("My Reviews");
+            stage.show();
 
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(mReviewsScene);
-
+            // Assuming MyReviewsController has a method to set the main application reference
             MyReviewsController controller = fxmlLoader.getController();
             controller.setStage(stage);
-            controller.setUser(user);
+
+            controller.initialize(user);
 
             stage.show();
         } catch (IOException e) {
@@ -354,7 +359,7 @@ public class CourseReviewsController {
             LoginScreenController controller = fxmlLoader.getController();
             controller.setStage(stage);
             controller.setUser(user);
-
+            stage.setTitle("Login");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

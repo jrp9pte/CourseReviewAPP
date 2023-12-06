@@ -35,9 +35,9 @@ public class MyReviewsController {
         loadReviews();
         setupReviewClickListener();
     }
-    public void setUser(User user){
-        this.user = user;
-    }
+//    public void setUser(User user){
+//        this.user = user;
+//    }
 
     // Method to load reviews into the ListView
     private void loadReviews() {
@@ -140,12 +140,20 @@ public class MyReviewsController {
     @FXML
     protected void handleCourSearchNavAction(ActionEvent event) {
         try {
-            Parent mReviewsRoot = FXMLLoader.load(getClass().getResource("course-search.fxml"));
-            Scene mReviewsScene = new Scene(mReviewsRoot);
+
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("course-search.fxml"));
+            Scene cSearchScene = new Scene(fxmlLoader.load());
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(cSearchScene);
 
-            stage.setScene(mReviewsScene);
+            CourseSearchController controller = fxmlLoader.getController();
+            controller.setStage(stage);
+            controller.setUser(user);
+
+            handleBackButton();
+
+
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -155,12 +163,19 @@ public class MyReviewsController {
     @FXML
     protected void handleLoginNavAction(ActionEvent event) {
         try {
-            Parent logoutRoot = FXMLLoader.load(getClass().getResource("initial-login.fxml"));
-            Scene logoutScene = new Scene(logoutRoot);
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("initial-login.fxml"));
+            Scene logoutScene = new Scene(fxmlLoader.load());
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
             stage.setScene(logoutScene);
+
+            LoginScreenController controller = fxmlLoader.getController();
+            controller.setStage(stage);
+            controller.setUser(user);
+
+
+            stage.setTitle("Login");
+
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

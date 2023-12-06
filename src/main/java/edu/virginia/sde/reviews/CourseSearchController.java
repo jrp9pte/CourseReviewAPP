@@ -218,12 +218,9 @@ public class CourseSearchController {
     }
 
     private void handleLinkedButtonAction(String currentCourseId) {
-        // Implement the linked button action using the course information
         // when button is clicked then go to the course review scene
         System.out.println("Linked button clicked for: " + currentCourseId);
 
-//        Sonthing like this
-//        Pass stage to this scene (use setStage function below) when called to use it here for changing scene
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("course-reviews.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
@@ -236,7 +233,8 @@ public class CourseSearchController {
 
             Course currentCourse = databaseManager.getCourseById(currentCourseId);
 
-            System.out.println("username");
+            System.out.println("username is ");
+            System.out.println(user.toString()+ user.getUsername());
             controller.initCourseData(currentCourse, user);
             controller.setStage(stage);
             stage.show();
@@ -287,6 +285,7 @@ public class CourseSearchController {
             System.out.println("user is" + user);
             controller.initialize(user);
 
+
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -296,12 +295,16 @@ public class CourseSearchController {
     @FXML
     protected void handleLoginNavAction(ActionEvent event) {
         try {
-            Parent logoutRoot = FXMLLoader.load(getClass().getResource("initial-login.fxml"));
-            Scene logoutScene = new Scene(logoutRoot);
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("initial-login.fxml"));
+            Scene logoutScene = new Scene(fxmlLoader.load());
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
             stage.setScene(logoutScene);
+
+            LoginScreenController controller = fxmlLoader.getController();
+            controller.setStage(stage);
+            controller.setUser(user);
+
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
