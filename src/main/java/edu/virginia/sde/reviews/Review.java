@@ -2,6 +2,7 @@ package edu.virginia.sde.reviews;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Reviews")
@@ -92,7 +93,16 @@ public class Review {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Review review = (Review) o;
+        return id == review.id && rating == review.rating && Objects.equals(timestamp, review.timestamp) && Objects.equals(comment, review.comment) && Objects.equals(user, review.user) && Objects.equals(course, review.course);
+    }
 
-
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, rating, timestamp, comment, user, course);
+    }
 }
