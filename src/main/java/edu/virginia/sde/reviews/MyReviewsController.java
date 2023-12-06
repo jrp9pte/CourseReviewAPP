@@ -140,12 +140,8 @@ public class MyReviewsController {
     @FXML
     protected void handleCourSearchNavAction(ActionEvent event) {
         try {
-            Parent mReviewsRoot = FXMLLoader.load(getClass().getResource("course-search.fxml"));
-            Scene mReviewsScene = new Scene(mReviewsRoot);
+            handleBackButton();
 
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-            stage.setScene(mReviewsScene);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -161,6 +157,7 @@ public class MyReviewsController {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
             stage.setScene(logoutScene);
+            stage.setTitle("Login");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
